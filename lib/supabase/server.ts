@@ -9,8 +9,9 @@ import { entornoSupabase } from "./entorno";
  * Usa la sesión del usuario (cookies), así que toda consulta pasa por RLS.
  */
 export async function crearClienteServidor() {
-  const { url, llave } = entornoSupabase();
+  // Primero las cookies: así Next sabe que la página depende de la sesión y no la arma al compilar.
   const almacen = await cookies();
+  const { url, llave } = entornoSupabase();
 
   return createServerClient<Database>(url, llave, {
     cookies: {

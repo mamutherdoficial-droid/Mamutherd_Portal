@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Boton, BotonEnlace } from "@/components/ui/Boton";
 import { CampoClave } from "@/components/ui/Campo";
@@ -9,7 +9,9 @@ type Paso = "revisando" | "listo" | "sin-enlace";
 
 export function FormNuevaClave() {
   const router = useRouter();
-  const supabase = useMemo(() => crearClienteNavegador(), []);
+  // El cliente se crea solo en el navegador (al compilar no existe sesión ni llaves).
+  const ref = useRef<ReturnType<typeof crearClienteNavegador>>(null);
+  const cliente = () => (ref.current ??= crearClienteNavegador());
   const [paso, setPaso] = useState<Paso>("revisando");
   const [clave, setClave] = useState("");
   const [repetir, setRepetir] = useState("");
@@ -19,6 +21,7 @@ export function FormNuevaClave() {
   // El enlace del correo trae un código; el cliente de Supabase lo cambia por una sesión al cargar.
   useEffect(() => {
     let vivo = true;
+    const supabase = cliente();
     supabase.auth.getSession().then(({ data }) => {
       if (vivo) setPaso(data.session ? "listo" : "sin-enlace");
     });
@@ -29,7 +32,8 @@ export function FormNuevaClave() {
       vivo = false;
       data.subscription.unsubscribe();
     };
-  }, [supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- cliente() siempre devuelve el mismo
+  }, []);
 
   async function guardar(e: React.FormEvent) {
     e.preventDefault();
@@ -37,7 +41,7 @@ export function FormNuevaClave() {
     if (clave !== repetir) return setError("Las dos contraseñas no son iguales.");
     setError(undefined);
     setGuardando(true);
-    const { error: fallo } = await supabase.auth.updateUser({ password: clave });
+    const { error: fallo } = await cliente().auth.updateUser({ password: clave });
     setGuardando(false);
     if (fallo) {
       setError(
