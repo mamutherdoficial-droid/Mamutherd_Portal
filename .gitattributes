@@ -1,0 +1,4 @@
+# Los scripts de bash y el SQL siempre con saltos de línea de Linux (si no, fallan en Docker y en CI)
+*.sh   text eol=lf
+*.sql  text eol=lf
+*.ps1  text eol=crlf

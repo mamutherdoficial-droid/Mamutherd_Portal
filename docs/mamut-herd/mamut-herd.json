@@ -1,0 +1,73 @@
+{
+  "nombre": "Mamut Herd",
+  "nombre_legal": "Mamut Herd S.A.S.",
+  "nombre_legal_activo": false,
+  "pais": "Colombia",
+  "eslogan": { "es": "De cría a mamut." },
+  "firma": { "es": "Un producto de Mamut Herd", "en": "A Mamut Herd product" },
+  "descripcion_corta": {
+    "es": "Mamut Herd crea productos digitales propios y ayuda a empresas pequeñas a volverse grandes.",
+    "en": "Mamut Herd builds its own digital products and helps small businesses grow."
+  },
+  "derechos": "© 2026 Mamut Herd",
+  "contacto": {
+    "correo": "mamutherdoficial@gmail.com",
+    "whatsapp": "+57 320 487 1882",
+    "whatsapp_url": "https://wa.me/573204871882",
+    "web": "MAMUT_HERD_URL"
+  },
+  "colores": {
+    "tinta": "#0F1E2E",
+    "tinta_2": "#16293D",
+    "hielo": "#EEF3F6",
+    "glaciar": "#C5D9E6",
+    "ambar": "#F5941F"
+  },
+  "tipografias": { "titulos": "Unbounded 800", "textos": "Manrope" },
+  "logos": {
+    "sello_linea": {
+      "fondo_claro": "logos/svg/un-producto-de-mamut-herd-linea-para-fondo-claro.svg",
+      "fondo_oscuro": "logos/svg/un-producto-de-mamut-herd-linea-para-fondo-oscuro.svg",
+      "blanco": "logos/svg/un-producto-de-mamut-herd-linea-una-tinta-blanco.svg",
+      "negro": "logos/svg/un-producto-de-mamut-herd-linea-una-tinta-negro.svg"
+    },
+    "sello_apilado": {
+      "fondo_claro": "logos/svg/un-producto-de-mamut-herd-apilado-para-fondo-claro.svg",
+      "fondo_oscuro": "logos/svg/un-producto-de-mamut-herd-apilado-para-fondo-oscuro.svg",
+      "blanco": "logos/svg/un-producto-de-mamut-herd-apilado-una-tinta-blanco.svg",
+      "negro": "logos/svg/un-producto-de-mamut-herd-apilado-una-tinta-negro.svg"
+    },
+    "logo_horizontal": {
+      "fondo_claro": "logos/svg/logo-horizontal-para-fondo-claro.svg",
+      "fondo_oscuro": "logos/svg/logo-horizontal-para-fondo-oscuro.svg",
+      "blanco": "logos/svg/logo-horizontal-una-tinta-blanco.svg",
+      "negro": "logos/svg/logo-horizontal-una-tinta-negro.svg"
+    },
+    "logo_vertical": {
+      "fondo_claro": "logos/svg/logo-vertical-para-fondo-claro.svg",
+      "fondo_oscuro": "logos/svg/logo-vertical-para-fondo-oscuro.svg"
+    },
+    "simbolo": {
+      "fondo_claro": "logos/svg/simbolo-para-fondo-claro.svg",
+      "fondo_oscuro": "logos/svg/simbolo-para-fondo-oscuro.svg",
+      "blanco": "logos/svg/simbolo-una-tinta-blanco.svg",
+      "negro": "logos/svg/simbolo-una-tinta-negro.svg"
+    },
+    "m": {
+      "fondo_claro": "logos/svg/m-para-fondo-claro.svg",
+      "fondo_oscuro": "logos/svg/m-para-fondo-oscuro.svg",
+      "blanco": "logos/svg/m-una-tinta-blanco.svg",
+      "negro": "logos/svg/m-una-tinta-negro.svg"
+    },
+    "manada": {
+      "fondo_claro": "logos/svg/manada-para-fondo-claro.svg",
+      "fondo_oscuro": "logos/svg/manada-para-fondo-oscuro.svg"
+    },
+    "sello_miembro": {
+      "color": "logos/svg/sello-miembro-color.svg",
+      "blanco": "logos/svg/sello-miembro-una-tinta-blanco.svg",
+      "negro": "logos/svg/sello-miembro-una-tinta-negro.svg"
+    },
+    "nota": "Cada SVG tiene un PNG con el mismo nombre en logos/png/. En apps móviles usa el PNG."
+  }
+}

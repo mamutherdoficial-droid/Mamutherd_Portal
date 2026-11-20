@@ -1,0 +1,22 @@
+<!-- Sello "Un producto de Mamut Herd" para el pie de página de una web.
+     1. Copia el SVG que corresponda a tu fondo en tu carpeta de imágenes (ej. /img/).
+     2. Pega este bloque al final de tu <footer>.
+     3. Cambia MAMUT_HERD_URL por la dirección de la web de Mamut Herd. -->
+<a class="mh-sello" href="MAMUT_HERD_URL" target="_blank" rel="noopener noreferrer">
+  <img src="/img/un-producto-de-mamut-herd-linea-para-fondo-claro.svg"
+       alt="Un producto de Mamut Herd" width="138" height="24">
+</a>
+
+<style>
+  .mh-sello { display: inline-flex; padding: 8px 0; opacity: .85; transition: opacity .2s; }
+  .mh-sello:hover, .mh-sello:focus-visible { opacity: 1; }
+  .mh-sello img { height: 24px; width: auto; display: block; } /* mínimo 18px de alto */
+</style>
+
+<!-- Si tu web tiene modo oscuro, usa <picture> para cambiar de versión sola: -->
+<a class="mh-sello" href="MAMUT_HERD_URL" target="_blank" rel="noopener noreferrer">
+  <picture>
+    <source srcset="/img/un-producto-de-mamut-herd-linea-para-fondo-oscuro.svg" media="(prefers-color-scheme: dark)">
+    <img src="/img/un-producto-de-mamut-herd-linea-para-fondo-claro.svg" alt="Un producto de Mamut Herd" width="138" height="24">
+  </picture>
+</a>
