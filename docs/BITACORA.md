@@ -16,6 +16,47 @@ Dudas:
 - …
 ```
 
+## 2026-11-20 · Fase 0 · Base, marca de Mamut, entrar y publicado
+Hecho:
+- Repo en GitHub (`mamutherdoficial-droid/Mamutherd_Portal`) con commits de la cuenta de Mamut; Git fijado a esa
+  cuenta en este repo. El "Initial commit" de GitKraken nunca había llegado a GitHub: se subió todo desde aquí.
+- App Next.js 16 + TypeScript estricto + Tailwind 4 con los tokens de DESIGN.md (claro y oscuro), Unbounded y Manrope
+  locales (`app/fuentes/`), logos del kit en `public/marca/`, `lib/marca.ts` leyendo `mamut-herd.json`.
+- `/entrar` (correo, contraseña con "Ver", errores que dicen qué hacer), "Olvidé mi contraseña" y `/entrar/nueva-clave` (D-021).
+- `proxy.ts`: sin sesión, toda ruta de la app manda a `/entrar?siguiente=…`.
+- Empresa activa: la primera a la que pertenece el usuario (`lib/sesion.ts`); si no tiene, pantalla "Tu usuario aún
+  no está en ningún equipo".
+- Layout: barra inferior (Hoy · Ventas · Cobros/Comisiones · Más) en celular, menú lateral desde 1024 px con nombre y
+  rol; secciones futuras como "Pronto" (D-024). Páginas: `/hoy` vacío, `/mas`, `/ajustes`, `/ajustes/acerca` (sello
+  apilado, texto y contacto), `/componentes` (claro y oscuro lado a lado).
+- `components/ui`: Boton, Campo/CampoClave, Hoja, Chip/Estado, Tarjeta, Dinero, Vacio.
+- PWA: manifest "Portal Mamut", íconos 192/512/180 desde `perfil-oscuro.png`, favicon `m` (D-026).
+- `lib/dominio/dinero.ts` y `semanas.ts` con Vitest.
+- Supabase: `supabase init` (CLI v3; contraseña mínima 8, redirect URLs locales). Migraciones y semilla aplicadas en
+  la nube con `db push --remote --include-seed`. Tipos reales en `lib/supabase/tipos.ts` generados desde la nube.
+- Vercel: `https://portalmamutherd.vercel.app` (preset Next.js, variables tipo Config, D-025).
+- Jacobo vinculado como gerente de Mamut Herd (D-028). Ya entra desde la web.
+- CI en GitHub Actions: lint, typecheck, Vitest, build y `bash scripts/probar-sql.sh`.
+- COMO-EMPEZAR paso 6 actualizado (CLI v3, Vercel, vincular por correo). Decisiones D-021 a D-028.
+Probado:
+- `pnpm lint` y `pnpm typecheck`: sin errores. `pnpm test`: 10/10. `pnpm build`: OK, también sin llaves.
+- `pnpm e2e`: 26/26 (móvil 390×844 y PC 1280×800). Incluye: sin sesión → /entrar, logo cambia con tema oscuro,
+  entrar → /hoy vacío, barra inferior vs. menú lateral, /componentes, sello en Acerca de, cerrar sesión.
+  Capturas en `tests/capturas/`.
+- `base_test.sql` contra la base de la nube dentro de `begin … rollback` (D-023): todo en verde, incluido
+  "anon no tiene permisos en tablas, vistas ni funciones" sobre el Supabase real. Se comprobó que no quedó nada.
+Falta:
+- Prueba en el celular de Jacobo (PLAN → Fase 0) y marcarla en SEGUIMIENTO.
+- `probar-sql.ps1` no se corrió: no hay Docker en el PC (D-023). El CI lo cubre con `probar-sql.sh` (primera corrida pendiente de ver en verde).
+- Playwright en el CI con `supabase start`: queda en local por ahora (lo permite el PLAN).
+- Tutorial guiado: empieza en la Fase 1 (D-019); la Fase 0 no tiene recorridos.
+- `pnpm audit` no se corrió aún.
+Para que Jacobo pruebe:
+- Los 6 pasos de "Prueba en el celular" de la Fase 0 en `docs/PLAN.md`.
+Dudas:
+- Ninguna de código. Seguridad: rotar la secret key y la contraseña de la base (pasaron por el chat) y volver
+  privado el repo de GitHub (está público; COMO-EMPEZAR pedía privado). No hay llaves en el repo.
+
 ## 2026-11-20 · Kit v2 (revisión con Claude antes de la Fase 0)
 Hecho:
 - Pruebas de la base movidas a `supabase/pruebas/`; `supabase/tests/` queda para pgTAP.

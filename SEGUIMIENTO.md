@@ -7,7 +7,7 @@ tú marcas las columnas "Probada en el celular" y "Revisada por Claude".
 
 | Fase | Fecha | Estado | Revisada por Claude | Probada en el celular |
 | --- | --- | --- | --- | --- |
-| 0 · Base, estética de Mamut, entrar, celular y PC | Vie 20 – dom 22 nov | Pendiente | — | — |
+| 0 · Base, estética de Mamut, entrar, celular y PC | Vie 20 – dom 22 nov | En curso: publicada, falta la prueba en el celular | — | — |
 | 1 · Clientes, ventas, Anotar visita, tutorial | Lun 23 nov | Pendiente | — | — |
 | 2 · Cobros, mensualidades, comisiones | Lun 30 nov | Pendiente | — | — |
 | 3 · Equipo, tareas, invitaciones | Lun 7 dic | Pendiente | — | — |
@@ -47,7 +47,12 @@ Estados: Pendiente · En curso · Cerrada · Pasa al lunes siguiente (con lo que
 ## Pendientes fuera del código
 
 - [x] Kit de marca de Mamut dentro del repo (`docs/mamut-herd/`) y lienzo de diseño con la estética de Mamut.
-- [ ] Publicar la web de Mamut Herd y cambiar `MAMUT_HERD_URL` (en `lib/marca.ts` y en el kit de marca).
+- [ ] **Seguridad (hazlo pronto):** en Supabase, crear una secret key nueva y borrar la vieja; cambiar la
+      contraseña de la base (las dos pasaron por el chat). Luego pásale la nueva secret key a Claude Code solo si
+      vas a correr las pruebas e2e (va en `.env.test.local`, nunca en Vercel).
+- [ ] Volver **privado** el repo de GitHub (Settings → General → Danger Zone → Change visibility).
+- [ ] Opcional: instalar Docker Desktop para correr `probar-sql.ps1` y `supabase start` en local (D-023).
+- [ ] Publicar la web de Mamut Herd y cambiar `MAMUT_HERD_URL` (en el kit de marca: `lib/marca.ts` lo lee de ahí).
 - [ ] Antes de la Fase 3: correo de cada amiga vendedora y de tu hermana.
 - [ ] Antes de la Fase 4b: un extracto real de Bancolombia y uno de Nequi (para los formatos) y, si quieres,
       la carpeta de tu conciliador Bold/Redeban.
@@ -65,6 +70,9 @@ Estados: Pendiente · En curso · Cerrada · Pasa al lunes siguiente (con lo que
 | Los correos de "Olvidé mi contraseña" llevan a `localhost` | Revisa el paso 6.4 de `COMO-EMPEZAR.md` |
 
 ## Enlaces
+
+- Portal publicado: https://portalmamutherd.vercel.app
+- Código: https://github.com/mamutherdoficial-droid/Mamutherd_Portal
 
 - Lienzo de diseño: Portal Mamut · cómo se ve (en tus artifacts de Claude)
 - Plan de ventas y acuerdos con ayudantes: en tus documentos de Claude

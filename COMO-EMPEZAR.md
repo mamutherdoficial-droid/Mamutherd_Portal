@@ -38,6 +38,9 @@ El CLI de Supabase **no** se instala aparte: Claude Code lo agrega al proyecto e
    La primera vez descarga la imagen de Postgres. Al final debe decir
    **`OK: todas las pruebas del esquema pasaron`**. Si sale otra cosa, copia el error completo y llévaselo a Claude.
 
+   **Sin Docker** (así arrancó la Fase 0, D-023): Claude Code corre las mismas pruebas contra la base de la
+   nube dentro de una transacción que se deshace al final, y el CI de GitHub las corre en un Postgres limpio.
+
 ## 3. GitHub y Supabase
 
 1. GitHub → **New repository** → nombre `mamut-portal`, **privado**, sin README. Copia la URL.
@@ -76,28 +79,37 @@ Estoy en Windows con PowerShell, Docker Desktop, Node LTS y pnpm. Ya corrí scri
 
 Claude Code revisa que estos pasos sigan sirviendo al final de la fase. Hazlos en este orden:
 
+> Hecho el 2026-11-20 (BITACORA). El repo en GitHub se llama `Mamutherd_Portal` y la app quedó en
+> `https://portalmamutherd.vercel.app`. Estos pasos quedan para repetirlos si algún día se rehace el proyecto.
+
 1. **Subir el código a GitHub.** Pídele a Claude Code: "Conecta el remoto `<URL de GitHub>` y sube main".
-2. **Base de datos en la nube.** En la terminal de la carpeta:
+   Los commits van con la cuenta de Mamut (`git config user.name/user.email` del repo).
+2. **Base de datos en la nube.** Con el CLI de Supabase v3 basta la contraseña de la base
+   (Supabase → Project Settings → Database). En PowerShell, en la carpeta:
    ```powershell
-   pnpm exec supabase login
-   pnpm exec supabase link --project-ref <REF>
-   pnpm exec supabase db push
+   $env:SUPABASE_DB_PASSWORD = '<contraseña de la base>'
+   pnpm exec supabase db push --remote=<REF> --include-seed
    ```
    `<REF>` es el código que aparece en la URL de tu proyecto (`supabase.com/dashboard/project/<REF>`).
-   Luego en Supabase → **SQL Editor** → pega todo `supabase/seed.sql` → **Run**.
-3. **Vercel.** vercel.com → **Add New → Project** → importa `mamut-portal` → en **Environment Variables** agrega
-   `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project Settings → API; si ves
-   "publishable key", usa esa) → **Deploy**. Copia la URL que te da.
+   `--include-seed` también corre `supabase/seed.sql`; no hace falta pegarlo en el SQL Editor.
+   Las migraciones nuevas solo suben las que falten; correrlo dos veces no daña nada.
+3. **Vercel.** vercel.com → **Add New → Project** → importa el repo **ya con código** (si lo importas vacío,
+   queda como "Other": ve a Settings → Build and Deployment → Framework Preset → **Next.js**).
+   En **Environment Variables** agrega `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   (Supabase → Project Settings → API Keys; la "publishable key" `sb_publishable_…`), de tipo **Config**:
+   son públicas a propósito y las protege RLS. **Nunca** pongas la `sb_secret_…` en Vercel.
+   Luego **Deployments → ⋯ → Redeploy**. Copia la URL que te da.
 4. **Correos de la cuenta.** Supabase → Authentication → **URL Configuration**: en **Site URL** pon la URL de
    Vercel; en **Redirect URLs** agrega esa URL, `…/entrar/nueva-clave` y `…/unirme`.
 5. **Tu usuario de gerente.** Supabase → Authentication → Users → **Add user** con tu correo y contraseña
-   (marca *Auto confirm*). Copia el **User UID** y corre en **SQL Editor**:
+   (marca *Auto confirm*). Luego corre en **SQL Editor** (cambia el correo por el que usaste):
    ```sql
    update public.miembros
-      set usuario_id = 'PEGA-AQUÍ-TU-UID'
+      set usuario_id = (select id from auth.users where email = 'TU-CORREO@gmail.com')
     where nombre = 'Jacobo López'
       and empresa_id = (select id from public.empresas where slug = 'mamut-herd');
    ```
+   Si al entrar ves "Tu usuario aún no está en ningún equipo", este paso faltó o el correo no coincide.
 6. **Prueba en el celular**: `docs/PLAN.md` → Fase 0 → "Prueba en el celular". Marca el resultado en
    `SEGUIMIENTO.md` y cuéntale a Claude.
 

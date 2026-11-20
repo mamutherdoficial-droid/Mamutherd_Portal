@@ -76,3 +76,48 @@ pasos de sus pantallas. Objetivo: una ayudante nueva lo usa sin que Jacobo le ex
 Mamut es el protagonista: logo horizontal en `/entrar`, símbolo en el menú, sello apilado en `/ajustes/acerca`.
 El ámbar se usa para una sola cosa por pantalla (el botón "Anotar visita"). Si en la fase 5 el portal recibe nombre
 comercial, ese nombre lleva la marca y Mamut queda como firma "Un producto de Mamut Herd", como dice la guía.
+
+**D-021 · 2026-11-20 · "Olvidé mi contraseña" se pide desde el navegador y el enlace se abre en el mismo dispositivo.**
+Supabase usa PKCE: el código del correo solo se puede cambiar por una sesión en el navegador que lo pidió.
+Así `/entrar/nueva-clave` funciona con las Redirect URLs que ya pedía COMO-EMPEZAR, sin rutas extra ni cambiar
+las plantillas de correo. Si se abre en otro dispositivo, la página lo explica y pide otro enlace.
+Descartado: ruta `/auth/confirmar` en el servidor (otra Redirect URL que configurar); enlace con `token_hash`
+(exige editar la plantilla del correo en Supabase).
+
+**D-022 · 2026-11-20 · Versiones de la Fase 0.** Next.js 16.4 (App Router, `proxy.ts`), React 19.3, Tailwind 4.3,
+Zod 4, Vitest 5, Playwright 1.65, Supabase CLI 3.2, ESLint 9 y **TypeScript 6.0**. No TypeScript 7: recién salido y
+`typescript-eslint` (que usa `eslint-config-next`) solo soporta hasta 6.0. No ESLint 10 por la misma razón.
+Se sube cuando las herramientas lo soporten. Versiones exactas en `package.json`.
+
+**D-023 · 2026-11-20 · Sin Docker en el PC de Jacobo: pruebas contra la base de la nube (temporal).**
+Excepción a D-013/D-016 que Jacobo autorizó mientras el proyecto no tiene datos reales:
+- Pruebas de la base: `supabase/pruebas/base_test.sql` se corre contra la nube **dentro de `begin … rollback`**:
+  prueba el Supabase de verdad (auth, roles, permisos de `anon`) sin dejar datos. El CI la corre en un Postgres limpio.
+- e2e: Playwright crea un usuario de prueba con la secret key (solo en `.env.test.local`, que no se sube) y lo vuelve
+  gerente de una empresa aparte, **"Pruebas e2e"** (`pruebas-e2e`), para no tocar los datos de Mamut.
+- La app sigue sin usar la secret key (SEGURIDAD.md).
+Cuando haya Docker: volver a `probar-sql.ps1` y `supabase start`, y borrar la empresa `pruebas-e2e` de la nube.
+Descartado: Postgres portátil en el PC (el permiso para ejecutar binarios descargados se negó).
+
+**D-024 · 2026-11-20 · Las secciones que aún no existen se muestran como "Pronto".** El menú y la barra inferior
+muestran desde ya todas las secciones del rol, deshabilitadas con "Pronto" hasta su fase (`lib/navegacion.ts` →
+`fase`). Así la ayudante y el gerente ven hacia dónde va el portal y no hay enlaces a páginas 404.
+"Más" (celular) lista lo que no cabe en la barra. Descartado: ocultarlas; enlaces que dan 404.
+
+**D-025 · 2026-11-20 · Variables públicas en Vercel como "Config"; la app acepta los dos nombres de la llave.**
+`NEXT_PUBLIC_SUPABASE_URL` y la llave publishable van al navegador por diseño (las protege RLS), así que en Vercel
+son tipo Config, no Secret. La app lee `NEXT_PUBLIC_SUPABASE_ANON_KEY` o `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+Las páginas que usan la sesión se arman al pedirlas, no al compilar: el build no necesita llaves.
+
+**D-026 · 2026-11-20 · Logos que cambian con el tema y tamaños del ícono.** Cada logo va en `<picture>` con la
+versión `para-fondo-oscuro` bajo `prefers-color-scheme: dark` (`components/marca/Logo.tsx`). El ícono de la PWA son
+copias de `perfil-oscuro.png` redimensionadas a 192, 512 y 180 px (`public/marca/`, `app/apple-icon.png`);
+el favicon es `m-para-fondo-claro.svg` tal cual. `docs/mamut-herd/` no se tocó.
+
+**D-027 · 2026-11-20 · Las migraciones conservan el número de fecha al inicio.** El CLI de Supabase lo exige
+(`AAAAMMDDHHMMSS_nombre.sql`): ordena las migraciones y registra cuáles ya se aplicaron en la nube. Lo legible va
+después del número (`…_anotar_visita.sql`). Descartado: renombrarlas (la nube ya las tiene registradas con ese número).
+
+**D-028 · 2026-11-20 · El gerente se vincula por correo, no por UID.** COMO-EMPEZAR 6.5 usa
+`(select id from auth.users where email = …)`: menos pasos y sin copiar UIDs. Jacobo entra con el usuario que creó
+en Supabase (su correo personal); se puede cambiar al correo de Mamut cuando quiera.
