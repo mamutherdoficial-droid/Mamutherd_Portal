@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Portal Mamut</string>
+    <string name="title_activity_main">Portal Mamut</string>
+    <string name="package_name">com.mamutherd.portal</string>
+    <string name="custom_url_scheme">com.mamutherd.portal</string>
+</resources>

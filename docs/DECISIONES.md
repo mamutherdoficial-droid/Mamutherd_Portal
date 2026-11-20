@@ -121,3 +121,16 @@ después del número (`…_anotar_visita.sql`). Descartado: renombrarlas (la nub
 **D-028 · 2026-11-20 · El gerente se vincula por correo, no por UID.** COMO-EMPEZAR 6.5 usa
 `(select id from auth.users where email = …)`: menos pasos y sin copiar UIDs. Jacobo entra con el usuario que creó
 en Supabase (su correo personal); se puede cambiar al correo de Mamut cuando quiera.
+
+**D-029 · 2026-11-20 · App Android con Capacitor que abre el portal publicado.** El launcher de Jacobo no muestra
+los accesos que crea Chrome ("Agregar a pantalla de inicio"), así que el portal también se entrega como APK.
+- Capacitor 8 con `server.url` = `https://portalmamutherd.vercel.app/hoy`: la app es una ventana al portal publicado;
+  lo que se publica en Vercel llega solo, sin reinstalar. Sin internet muestra `capacitor-www/sin-conexion.html`.
+- Botón/gesto atrás (`components/app/BotonAtras.tsx`, plugin `@capacitor/app`): cierra la hoja abierta; si no,
+  vuelve a la pantalla anterior del portal; en `/hoy` o `/entrar` minimiza la app (no la cierra). En el navegador no hace nada.
+- Identificador `com.mamutherd.portal`, nombre "Portal Mamut", ícono y splash desde `perfil-oscuro.png`.
+- Se arma con `scripts/apk.ps1`: Java de Android Studio (25), Gradle 9.2 (la 8.14 del proyecto no corre en Java 25
+  y Capacitor 8 pide Java 21+), caché en `D:\.gradle`. Todo en D, nada en C.
+- Firma de prueba (debug) por ahora. Para Play Store se crea una llave nueva solo de Mamut; no se reutiliza la de Impromptu.
+- "Olvidé mi contraseña" se hace desde Chrome: el enlace del correo abre el navegador, no la app (D-021).
+Descartado: TWA/Bubblewrap (menos control del botón atrás); app nativa aparte (duplicaría el portal).

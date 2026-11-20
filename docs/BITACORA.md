@@ -16,6 +16,22 @@ Dudas:
 - …
 ```
 
+## 2026-11-20 · Fase 0 (extra) · App Android con Capacitor
+Hecho:
+- Capacitor 8 (`capacitor.config.ts`, carpeta `android/`) abriendo el portal publicado (D-029).
+- Botón atrás de Android: cierra hojas, vuelve a la pantalla anterior, en /hoy o /entrar minimiza.
+- Ícono adaptativo, ícono redondo y splash con el mamut (`perfil-oscuro.png`), fondo tinta. Pantalla "Sin conexión".
+- `scripts/apk.ps1` para armar el APK con todo en D (Java de Android Studio, `D:\.gradle`, SDK en `D:\Android\sdk`).
+- CI: el paso de tipos ahora genera antes los tipos de rutas de Next (`next typegen`); quedó en verde.
+Probado:
+- `pnpm typecheck` y `pnpm lint` sin errores con el código nuevo.
+- APK: ver la entrada siguiente o el resumen de la sesión.
+Falta:
+- Instalar el APK en el celular de Jacobo y probar atrás, modo oscuro, cerrar sesión y sin conexión.
+Para que Jacobo pruebe:
+- Instala `app-debug.apk`, entra, navega Hoy → Más → Ajustes → Acerca de y usa atrás: vuelve paso a paso;
+  en Hoy, atrás minimiza. Abre la app sin internet: sale "No hay conexión".
+
 ## 2026-11-20 · Fase 0 · Base, marca de Mamut, entrar y publicado
 Hecho:
 - Repo en GitHub (`mamutherdoficial-droid/Mamutherd_Portal`) con commits de la cuenta de Mamut; Git fijado a esa

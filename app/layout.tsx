@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { BotonAtras } from "@/components/app/BotonAtras";
 import { APP, marca } from "@/lib/marca";
 import "./globals.css";
 
@@ -39,7 +40,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es-CO" className={`${unbounded.variable} ${manrope.variable}`}>
-      <body className="min-h-dvh antialiased">{children}</body>
+      <body className="min-h-dvh antialiased">
+        {children}
+        <BotonAtras />
+      </body>
     </html>
   );
 }

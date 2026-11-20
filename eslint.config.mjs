@@ -13,6 +13,8 @@ const config = [
       "test-results/**",
       "next-env.d.ts",
       "lib/supabase/tipos.ts",
+      "android/**",
+      "capacitor-www/**",
       // Kit de marca: no se modifica (docs/mamut-herd/LEEME.md)
       "docs/mamut-herd/**",
     ],

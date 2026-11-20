@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Sin conexión · Portal Mamut</title>
+    <style>
+      :root {
+        --fondo: #eef3f6;
+        --tinta: #0f1e2e;
+        --suave: #4e6072;
+        --principal: #0f1e2e;
+        --sobre: #eef3f6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --fondo: #0f1e2e;
+          --tinta: #eef3f6;
+          --suave: #9fb3c4;
+          --principal: #eef3f6;
+          --sobre: #0f1e2e;
+        }
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        background: var(--fondo);
+        color: var(--tinta);
+        font-family: system-ui, sans-serif;
+        text-align: center;
+        padding: 24px;
+        box-sizing: border-box;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 0 0 8px;
+      }
+      p {
+        color: var(--suave);
+        margin: 0 0 24px;
+        line-height: 1.5;
+      }
+      button {
+        min-height: 48px;
+        padding: 0 24px;
+        border: 0;
+        border-radius: 10px;
+        background: var(--principal);
+        color: var(--sobre);
+        font-size: 15px;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>No hay conexión</h1>
+      <p>El portal necesita internet. Revisa tus datos o el wifi y vuelve a intentar.</p>
+      <button type="button" onclick="location.href = 'https://portalmamutherd.vercel.app/hoy'">
+        Volver a intentar
+      </button>
+    </main>
+  </body>
+</html>
