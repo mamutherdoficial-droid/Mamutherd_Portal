@@ -9,6 +9,7 @@ import {
   ListChecks,
   Menu,
   Settings,
+  Store,
   Sun,
   Target,
   Users,
@@ -21,6 +22,7 @@ import { disponible, type Seccion } from "@/lib/navegacion";
 const ICONOS: Record<Seccion["icono"], LucideIcon> = {
   hoy: Sun,
   ventas: Handshake,
+  clientes: Store,
   cobros: Wallet,
   comisiones: Coins,
   equipo: Users,

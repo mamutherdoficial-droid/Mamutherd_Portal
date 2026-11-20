@@ -442,6 +442,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"recorridos_vistos": {
+                  Row: {
+                    "completado_en": string,"empresa_id": string,"recorrido": string,"saltado": boolean,"usuario_id": string,"version": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "completado_en"?: string,"empresa_id": string,"recorrido": string,"saltado"?: boolean,"usuario_id": string,"version"?: number
+                  }
+                  Update: {
+                    "completado_en"?: string,"empresa_id"?: string,"recorrido"?: string,"saltado"?: boolean,"usuario_id"?: string,"version"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "recorridos_vistos_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"reglas_comision": {
                   Row: {
                     "activa": boolean,"atribucion": string,"concepto": string,"empresa_id": string,"id": string,"meses_max": number | null,"porcentaje": number
@@ -636,7 +656,10 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "es_gerente":
+            "anotar_visita":
+{ Args: { "p_cliente_id"?: string,"p_empresa": string,"p_hablo_con_dueno"?: boolean,"p_nombre_negocio"?: string,"p_nota"?: string,"p_producto_id": string,"p_proxima_accion"?: string,"p_proxima_fecha"?: string,"p_resultado"?: string }; Returns: Json
+                           },
+"es_gerente":
 { Args: { "p_empresa": string }; Returns: boolean
                            },
 "es_miembro":

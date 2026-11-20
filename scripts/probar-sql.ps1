@@ -1,6 +1,6 @@
 # Pruebas de la base en Windows, con Docker (no necesitas Postgres instalado).
 # Corre el mismo scripts/probar-sql.sh dentro de un contenedor de Postgres:
-# migraciones y semilla dos veces + supabase/pruebas/base_test.sql.
+# migraciones y semilla dos veces + supabase/pruebas/*_test.sql.
 # Nunca toca la base de `supabase start`.
 # Uso, en la carpeta del proyecto:
 #   powershell -ExecutionPolicy Bypass -File scripts/probar-sql.ps1

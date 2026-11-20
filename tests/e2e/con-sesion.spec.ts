@@ -14,10 +14,10 @@ async function entrar(page: Page) {
   await expect(page).toHaveURL(/\/hoy$/, { timeout: 30_000 });
 }
 
-test("entrar y ver Hoy vacío", async ({ page }, info) => {
+test("entrar y ver Hoy", async ({ page }, info) => {
   await entrar(page);
   await expect(page.getByRole("heading", { name: /^Hola,/ })).toBeVisible();
-  await expect(page.getByText("Aún no hay visitas esta semana")).toBeVisible();
+  await expect(page.getByTestId("visitas-semana")).toBeVisible();
 
   if (info.project.name === "movil") {
     await expect(page.getByTestId("barra-inferior")).toBeVisible();

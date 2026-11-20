@@ -134,3 +134,31 @@ los accesos que crea Chrome ("Agregar a pantalla de inicio"), así que el portal
 - Firma de prueba (debug) por ahora. Para Play Store se crea una llave nueva solo de Mamut; no se reutiliza la de Impromptu.
 - "Olvidé mi contraseña" se hace desde Chrome: el enlace del correo abre el navegador, no la app (D-021).
 Descartado: TWA/Bubblewrap (menos control del botón atrás); app nativa aparte (duplicaría el portal).
+
+**D-030 · 2026-11-20 · Fase 1 empezó antes de cerrar la Fase 0, por pedido de Jacobo.** La Fase 0 quedó publicada y
+probada (pruebas en verde); solo faltaba su prueba en el celular. Jacobo pidió seguir. Las dos pruebas en el celular
+(Fase 0 y Fase 1) se hacen juntas. Excepción a la regla "no se empieza una fase sin cerrar la anterior" del PLAN.
+
+**D-031 · 2026-11-20 · Cómo se comporta "Anotar visita" (`anotar_visita`).**
+- Busca el negocio por nombre sin importar mayúsculas antes de crear uno nuevo (evita duplicados tipo "Café luna").
+- Reutiliza la oportunidad **abierta** del mismo producto; si la última está ganada o perdida, abre otra.
+- La etapa **solo avanza**: interesado/volver → contactado, pidió propuesta → propuesta; nunca retrocede.
+  "No le interesa" la cierra como perdida y la nota es el motivo (o "No le interesa").
+- Si una ayudante visita un negocio cuya venta lleva otra persona, la actividad queda registrada pero la venta no
+  se mueve (RLS: solo quien la lleva o un gerente).
+Descartado: elegir etapa a mano en el formulario (más toques; la meta es < 20 s).
+
+**D-032 · 2026-11-20 · Tutorial guiado con componente propio.** Coach marks, burbujas y bienvenida en
+`components/recorrido/` (sin driver.js): son pocas piezas, se ven con los tokens de Mamut y respetan
+`prefers-reduced-motion`. Dentro de "Anotar visita" el walkthrough se muestra **en el mismo formulario** (paso
+"n de 5" y borde ámbar en el campo), porque la hoja es un `<dialog>` y nada puede taparlo desde afuera.
+"Hacer el recorrido otra vez" borra las filas de `recorridos_vistos` del usuario (son preferencias, no datos de negocio).
+Saltar la bienvenida también salta la primera visita guiada.
+
+**D-033 · 2026-11-20 · Hoy muestra también los próximos 7 días.** Además de vencidos y de hoy, "Próximos 7 días":
+así una visita con "Mañana" se ve enseguida con su fecha. Y una línea con las visitas de la semana (y cuántas con el
+dueño) mientras llegan las metas de la Fase 4.
+
+**D-034 · 2026-11-20 · Quitar un vendedor de una venta solo si aún no tiene comisiones.** `oportunidad_vendedores` es
+una relación, no un dato de negocio, y se puede corregir; pero si esa persona ya tiene comisiones por la venta, se
+niega (las comisiones dependen de esa fila). "Ganada" no se ofrece en "Pasar a…": la marca el gerente con el pago (Fase 2).

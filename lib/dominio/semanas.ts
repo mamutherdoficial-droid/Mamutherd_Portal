@@ -56,6 +56,20 @@ const largo = new Intl.DateTimeFormat("es-CO", {
   month: "long",
 });
 
+/** Fecha de seguimiento para mostrar: "Hoy", "Mañana", "Vencida hace 3 días", "Martes 24 de noviembre". */
+export function textoFecha(
+  fecha: string,
+  hoy: string = diaBogota(),
+): { texto: string; estado: "error" | "alerta" | "neutro" } {
+  if (fecha < hoy) {
+    const dias = Math.round((aUTC(hoy).getTime() - aUTC(fecha).getTime()) / 86_400_000);
+    return { texto: dias === 1 ? "Vencida ayer" : `Vencida hace ${dias} días`, estado: "error" };
+  }
+  if (fecha === hoy) return { texto: "Hoy", estado: "alerta" };
+  if (fecha === sumarDias(hoy, 1)) return { texto: "Mañana", estado: "neutro" };
+  return { texto: fechaLarga(fecha), estado: "neutro" };
+}
+
 /** "Viernes 20 de noviembre" */
 export function fechaLarga(dia: string): string {
   const texto = largo.format(aUTC(dia)).replace(",", "");

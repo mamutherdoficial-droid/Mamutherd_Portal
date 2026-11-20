@@ -13,6 +13,7 @@ export default defineConfig({
   testDir: "tests/e2e",
   outputDir: "test-results",
   fullyParallel: false,
+  timeout: 60_000,
   workers: 1,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",

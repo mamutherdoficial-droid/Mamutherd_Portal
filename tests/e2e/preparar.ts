@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { RECORRIDOS } from "../../lib/recorridos";
 
 /**
  * Crea el usuario de prueba de Playwright y lo vuelve gerente de una empresa aparte
@@ -59,5 +60,33 @@ export default async function preparar() {
     });
     if (e2) throw e2;
   }
+
+  // 4. Productos de la empresa de pruebas (para "Anotar visita").
+  const { error: e3 } = await admin.from("productos").upsert(
+    [
+      { empresa_id: empresa.id, nombre: "Nef", orden: 1 },
+      { empresa_id: empresa.id, nombre: "Antesala", orden: 2 },
+    ],
+    { onConflict: "empresa_id,nombre" },
+  );
+  if (e3) throw e3;
+
+  // 5. Empezar limpio: borra los negocios de corridas anteriores (solo de "pruebas-e2e").
+  const { error: e4 } = await admin.from("clientes").delete().eq("empresa_id", empresa.id);
+  if (e4) throw e4;
+
+  // 6. Tutorial ya visto, para que no tape las pruebas (la de la guía lo reinicia a propósito).
+  const vistos = RECORRIDOS.map((r) => ({
+    usuario_id: usuarioId,
+    empresa_id: empresa.id,
+    recorrido: r.id,
+    version: r.version,
+    saltado: true,
+  }));
+  const { error: e5 } = await admin.from("recorridos_vistos").upsert(vistos, {
+    onConflict: "usuario_id,empresa_id,recorrido",
+  });
+  if (e5) throw e5;
+
   console.log("[preparar] Usuario de prueba listo.");
 }

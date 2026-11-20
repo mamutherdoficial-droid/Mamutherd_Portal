@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { diaBogota, fechaLarga, finSemana, inicioSemana, semanaDe, sumarDias } from "./semanas";
+import { diaBogota, fechaLarga, finSemana, inicioSemana, semanaDe, sumarDias, textoFecha } from "./semanas";
 
 describe("semanas de lunes a domingo", () => {
   it("el lunes de un viernes", () => {
@@ -25,6 +25,14 @@ describe("hora de Bogotá", () => {
     const instante = new Date("2026-11-23T04:00:00Z");
     expect(diaBogota(instante)).toBe("2026-11-22");
     expect(semanaDe(instante)).toEqual({ lunes: "2026-11-16", domingo: "2026-11-22" });
+  });
+
+  it("texto de seguimiento según la fecha", () => {
+    expect(textoFecha("2026-11-20", "2026-11-20")).toEqual({ texto: "Hoy", estado: "alerta" });
+    expect(textoFecha("2026-11-21", "2026-11-20").texto).toBe("Mañana");
+    expect(textoFecha("2026-11-19", "2026-11-20")).toEqual({ texto: "Vencida ayer", estado: "error" });
+    expect(textoFecha("2026-11-17", "2026-11-20").texto).toBe("Vencida hace 3 días");
+    expect(textoFecha("2026-11-24", "2026-11-20").texto).toBe("Martes 24 de noviembre");
   });
 
   it("fecha larga en español", () => {

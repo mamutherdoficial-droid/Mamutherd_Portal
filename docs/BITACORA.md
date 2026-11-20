@@ -16,6 +16,30 @@ Dudas:
 - …
 ```
 
+## 2026-11-20 · Fase 1 · Clientes, ventas, Anotar visita y tutorial (en pausa, sin cerrar)
+Hecho:
+- Migraciones `20261123000000_anotar_visita.sql` (función en una transacción, D-031) y
+  `20261123000100_recorridos_vistos.sql` (RLS: cada quien lo suyo). Aplicadas en la nube.
+- Pruebas SQL `supabase/pruebas/fase1_test.sql`; `probar-sql.sh` corre todos los `*_test.sql`.
+- `/hoy` v1 (vencidos, de hoy, próximos 7 días, visitas de la semana; D-033), hoja **Anotar visita** con botón ámbar,
+  `/ventas` por etapa con filtros, "Pasar a…", "Perdida" con motivo y seguimiento editable, `/clientes` con buscador,
+  `/clientes/[id]` (datos, editar, ventas, vendedores para el gerente, historial), WhatsApp con mensaje editable,
+  `/guia` con los 5 pasos y "Hacer el recorrido otra vez".
+- Tutorial guiado propio (D-032): bienvenida (gerente y ayudante), primera visita guiada, product tour de Ventas.
+- Vitest: etapas, WhatsApp y fechas de seguimiento (21 pruebas en verde).
+Probado:
+- Pruebas SQL de base + Fase 1 contra la nube en `begin … rollback`: en verde.
+- `pnpm typecheck` y `pnpm lint`: sin errores. `pnpm build`: OK.
+- e2e contra `pnpm start`: 34/40 en la última corrida completa. Anotar visita: **6 toques, 1,7–5,8 s** (meta: ≤ 6 y < 20 s).
+  Las 6 fallas se diagnosticaron y se corrigieron después de esa corrida (falta volver a correrlas):
+  el resalte del tutorial medía el botón antes de que cargara la página; "Perdida" justo después de "Pasar a…"
+  perdía el toque mientras la tarjeta se mudaba de grupo; dos pruebas estaban mal planteadas.
+Falta:
+- Volver a correr `pnpm e2e` completo y ver todo en verde; `/verificar` de la fase.
+- Prueba en el celular de Jacobo (Fases 0 y 1 juntas, D-030).
+Para que Jacobo pruebe:
+- Los 5 pasos de "Prueba en el celular" de la Fase 1 en `docs/PLAN.md`.
+
 ## 2026-11-20 · Fase 0 (extra) · App Android con Capacitor
 Hecho:
 - Capacitor 8 (`capacitor.config.ts`, carpeta `android/`) abriendo el portal publicado (D-029).

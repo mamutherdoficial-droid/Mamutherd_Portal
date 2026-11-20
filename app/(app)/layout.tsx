@@ -1,6 +1,9 @@
 import { LogOut } from "lucide-react";
 import { BarraInferior, MenuLateral } from "@/components/app/Navegacion";
 import { Logo } from "@/components/marca/Logo";
+import { ProveedorRecorridos } from "@/components/recorrido/Recorridos";
+import { ProveedorAvisos } from "@/components/ui/Avisos";
+import { recorridosVistos } from "@/lib/datos";
 import { salir } from "@/lib/acciones/sesion";
 import { barraInferior, seccionesDe } from "@/lib/navegacion";
 import { obtenerContexto } from "@/lib/sesion";
@@ -14,8 +17,9 @@ const NOMBRE_ROL = { gerente: "Gerente", ayudante: "Ayudante" } as const;
 export default async function LayoutApp({ children }: { children: React.ReactNode }) {
   const ctx = await obtenerContexto();
   const rol = ctx?.rol ?? "ayudante";
+  const vistos = ctx ? await recorridosVistos(ctx.empresa.id) : {};
 
-  return (
+  const contenido = (
     <div className="min-h-dvh lg:grid lg:grid-cols-[260px_1fr]">
       <aside
         data-testid="menu-lateral"
@@ -67,5 +71,17 @@ export default async function LayoutApp({ children }: { children: React.ReactNod
         )}
       </div>
     </div>
+  );
+
+  return (
+    <ProveedorAvisos>
+      {ctx ? (
+        <ProveedorRecorridos rol={rol} vistosIniciales={vistos}>
+          {contenido}
+        </ProveedorRecorridos>
+      ) : (
+        contenido
+      )}
+    </ProveedorAvisos>
   );
 }

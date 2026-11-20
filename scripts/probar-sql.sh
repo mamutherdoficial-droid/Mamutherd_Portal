@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Prueba el esquema en un Postgres temporal (sin Supabase): corre la migración
-# y la semilla DOS veces (deben ser idempotentes) y luego supabase/pruebas/base_test.sql.
+# y la semilla DOS veces (deben ser idempotentes) y luego supabase/pruebas/*_test.sql (base_test primero).
 # En Windows usa scripts/probar-sql.ps1 (corre este mismo script dentro de Docker).
 # Uso: bash scripts/probar-sql.sh   (necesita Postgres 15+ instalado: initdb, pg_ctl, psql)
 set -euo pipefail
@@ -22,4 +22,4 @@ for i in 1 2; do
   "${PSQL[@]}" -f supabase/seed.sql
 done
 echo "Migración y semilla corren dos veces sin error."
-"${PSQL[@]}" -f supabase/pruebas/base_test.sql
+for f in supabase/pruebas/*_test.sql; do "${PSQL[@]}" -f "$f"; done
