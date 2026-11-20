@@ -10,7 +10,8 @@ async function entrar(page: Page) {
   await page.getByLabel("Correo").fill(correo!);
   await page.getByLabel("Contraseña").fill(clave!);
   await page.getByRole("button", { name: "Entrar" }).click();
-  await expect(page).toHaveURL(/\/hoy$/);
+  // En desarrollo, la primera visita a /hoy compila la página: puede tardar.
+  await expect(page).toHaveURL(/\/hoy$/, { timeout: 30_000 });
 }
 
 test("entrar y ver Hoy vacío", async ({ page }, info) => {
