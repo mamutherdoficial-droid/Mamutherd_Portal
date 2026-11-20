@@ -43,13 +43,15 @@ export const obtenerContexto = cache(async (): Promise<Contexto | null> => {
 
   const fila = data?.[0];
   if (!fila || !fila.empresa) return null;
+  // La base solo acepta 'gerente' o 'ayudante' (check); cualquier otra cosa se trata como ayudante.
+  const rol: Rol = fila.rol === "gerente" ? "gerente" : "ayudante";
 
   return {
     usuarioId,
     correo: typeof auth.claims.email === "string" ? auth.claims.email : null,
     miembroId: fila.id,
     nombre: fila.nombre,
-    rol: fila.rol,
+    rol,
     empresa: { id: fila.empresa.id, nombre: fila.empresa.nombre, slug: fila.empresa.slug },
   };
 });

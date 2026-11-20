@@ -32,7 +32,6 @@ export function FormNuevaClave() {
       vivo = false;
       data.subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- cliente() siempre devuelve el mismo
   }, []);
 
   async function guardar(e: React.FormEvent) {
