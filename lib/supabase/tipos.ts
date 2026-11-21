@@ -231,6 +231,38 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"invitaciones": {
+                  Row: {
+                    "creado_en": string,"creado_por": string | null,"empresa_id": string,"id": string,"miembro_id": string,"token_hash": string,"usada_en": string | null,"usada_por": string | null,"vence_en": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "creado_en"?: string,"creado_por"?: string | null,"empresa_id": string,"id"?: string,"miembro_id": string,"token_hash": string,"usada_en"?: string | null,"usada_por"?: string | null,"vence_en"?: string
+                  }
+                  Update: {
+                    "creado_en"?: string,"creado_por"?: string | null,"empresa_id"?: string,"id"?: string,"miembro_id"?: string,"token_hash"?: string,"usada_en"?: string | null,"usada_por"?: string | null,"vence_en"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "invitaciones_creado_por_fkey"
+      columns: ["creado_por"]
+isOneToOne: false
+      referencedRelation: "miembros"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "invitaciones_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "invitaciones_miembro_id_fkey"
+      columns: ["miembro_id"]
+isOneToOne: false
+      referencedRelation: "miembros"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"metas": {
                   Row: {
                     "empresa_id": string,"id": string,"indicador": string,"miembro_id": string | null,"objetivo": number,"producto_id": string | null,"semana": string
@@ -265,14 +297,14 @@ isOneToOne: false
                   ]
                 },"miembros": {
                   Row: {
-                    "activo": boolean,"borrado_en": string | null,"creado_en": string,"empresa_id": string,"forma_pago": string,"id": string,"nombre": string,"rol": string,"usuario_id": string | null,"whatsapp": string | null
+                    "activo": boolean,"borrado_en": string | null,"correo": string | null,"creado_en": string,"empresa_id": string,"forma_pago": string,"id": string,"nombre": string,"rol": string,"usuario_id": string | null,"whatsapp": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "activo"?: boolean,"borrado_en"?: string | null,"creado_en"?: string,"empresa_id": string,"forma_pago"?: string,"id"?: string,"nombre": string,"rol": string,"usuario_id"?: string | null,"whatsapp"?: string | null
+                    "activo"?: boolean,"borrado_en"?: string | null,"correo"?: string | null,"creado_en"?: string,"empresa_id": string,"forma_pago"?: string,"id"?: string,"nombre": string,"rol": string,"usuario_id"?: string | null,"whatsapp"?: string | null
                   }
                   Update: {
-                    "activo"?: boolean,"borrado_en"?: string | null,"creado_en"?: string,"empresa_id"?: string,"forma_pago"?: string,"id"?: string,"nombre"?: string,"rol"?: string,"usuario_id"?: string | null,"whatsapp"?: string | null
+                    "activo"?: boolean,"borrado_en"?: string | null,"correo"?: string | null,"creado_en"?: string,"empresa_id"?: string,"forma_pago"?: string,"id"?: string,"nombre"?: string,"rol"?: string,"usuario_id"?: string | null,"whatsapp"?: string | null
                   }
                   Relationships: [
                     {
@@ -657,8 +689,14 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "anotar_visita":
+            "aceptar_invitacion":
+{ Args: { "p_token": string }; Returns: Json
+                           },
+"anotar_visita":
 { Args: { "p_cliente_id"?: string,"p_empresa": string,"p_hablo_con_dueno"?: boolean,"p_nombre_negocio"?: string,"p_nota"?: string,"p_producto_id": string,"p_proxima_accion"?: string,"p_proxima_fecha"?: string,"p_resultado"?: string }; Returns: Json
+                           },
+"crear_invitacion":
+{ Args: { "p_miembro": string }; Returns: string
                            },
 "es_gerente":
 { Args: { "p_empresa": string }; Returns: boolean
@@ -671,6 +709,9 @@ isOneToOne: false
                            },
 "generar_mensualidades":
 { Args: { "p_empresa": string,"p_mes": string }; Returns: number
+                           },
+"hash_token":
+{ Args: { "p_token": string }; Returns: string
                            },
 "mi_miembro":
 { Args: { "p_empresa": string }; Returns: string
