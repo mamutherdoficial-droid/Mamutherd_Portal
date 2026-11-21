@@ -18,7 +18,8 @@ Dudas:
 
 ## 2026-11-20 · Fase 1 · Clientes, ventas, Anotar visita y tutorial · CERRADA
 `/verificar`: lint, tipos, Vitest (20), e2e (40/40), RLS en las 18 tablas, `anon` sin permisos, sin llaves en el código,
-`pnpm audit` limpio, sin dinero en decimales ni comisiones desde la app. Jacobo probó Fases 0 y 1 en el celular: OK.
+`pnpm audit` limpio, sin dinero en decimales ni comisiones desde la app; pruebas SQL otra vez en verde en la nube.
+Jacobo probó Fases 0 y 1 en el celular: OK.
 Hecho:
 - Migraciones `20261123000000_anotar_visita.sql` (función en una transacción, D-031) y
   `20261123000100_recorridos_vistos.sql` (RLS: cada quien lo suyo). Aplicadas en la nube.
@@ -40,8 +41,6 @@ Probado:
 Falta:
 - Endurecer en la próxima migración (Fase 2): `motivo_perdida` no vacío en la base (hoy la base exige que no sea
   null y la app exige 3 letras; un texto vacío por fuera de la app pasaría).
-- Volver a correr las pruebas SQL cuando el CLI de Supabase tenga sesión en la cuenta del portal (hoy tiene otra);
-  no cambió ningún SQL desde la corrida en verde de las 11:33.
 Para que Jacobo pruebe:
 - Los 5 pasos de "Prueba en el celular" de la Fase 1 en `docs/PLAN.md`.
 
