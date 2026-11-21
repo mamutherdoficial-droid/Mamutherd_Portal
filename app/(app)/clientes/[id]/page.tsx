@@ -17,6 +17,8 @@ import {
   productosActivos,
 } from "@/lib/datos";
 import { mostrarWhatsapp } from "@/lib/dominio/whatsapp";
+import { cobrosLista, planesActivos } from "@/lib/datos-cobros";
+import { Dinero } from "@/components/ui/Dinero";
 import { obtenerContexto } from "@/lib/sesion";
 import { EditarCliente } from "./EditarCliente";
 import { Vendedores } from "./Vendedores";
@@ -42,13 +44,18 @@ export default async function FichaCliente({ params }: PageProps<"/clientes/[id]
   if (!cliente) notFound(); // no existe o RLS no lo deja ver
 
   const esGerente = ctx.rol === "gerente";
-  const [ventas, actividades, productos, cortos, miembros] = await Promise.all([
+  const [ventas, actividades, productos, cortos, miembros, planes, cobros] = await Promise.all([
     oportunidadesDeCliente(ctx.empresa.id, id),
     actividadesDeCliente(ctx.empresa.id, id),
     productosActivos(ctx.empresa.id),
     clientesCortos(ctx.empresa.id),
     esGerente ? miembrosActivos(ctx.empresa.id) : Promise.resolve([]),
+    esGerente ? planesActivos(ctx.empresa.id) : Promise.resolve([]),
+    esGerente ? cobrosLista(ctx.empresa.id, id) : Promise.resolve([]),
   ]);
+  // Saldo: solo el gerente (una ayudante no ve montos de cobros, por RLS y aquí).
+  const saldo = cobros.reduce((s, c) => s + c.saldo, 0);
+  const vencido = cobros.filter((c) => c.estado === "vencido").reduce((s, c) => s + c.saldo, 0);
   const puedeEditar = esGerente || cliente.creado_por === ctx.miembroId;
   const quien = ctx.nombre.split(" ")[0]!;
   const whatsapp = mostrarWhatsapp(cliente.contacto_whatsapp);
@@ -76,6 +83,17 @@ export default async function FichaCliente({ params }: PageProps<"/clientes/[id]
             <Dato icono={AtSign} etiqueta="Instagram" valor={cliente.instagram ? `@${cliente.instagram}` : null} />
           </dl>
           {cliente.notas && <p className="mt-3 whitespace-pre-line border-t border-borde pt-3">{cliente.notas}</p>}
+          {esGerente && cobros.length > 0 && (
+            <div className="mt-3 border-t border-borde pt-3" data-testid="saldo-cliente">
+              <p className="text-chico text-tinta-suave">Saldo por cobrar</p>
+              <Dinero pesos={saldo} tamano="grande" />
+              {vencido > 0 && (
+                <p className="font-semibold text-error">
+                  Vencido: <Dinero pesos={vencido} className="!text-base" />
+                </p>
+              )}
+            </div>
+          )}
           {ventas[0] && (
             <div className="mt-4">
               <BotonWhatsapp
@@ -98,7 +116,7 @@ export default async function FichaCliente({ params }: PageProps<"/clientes/[id]
           ) : (
             ventas.map((o) => (
               <div key={o.id} className="flex flex-col gap-2">
-                <TarjetaOportunidad o={o} quien={quien} mostrarCliente={false} />
+                <TarjetaOportunidad o={o} quien={quien} mostrarCliente={false} gerencia={esGerente ? { planes, miembros } : undefined} />
                 {esGerente && <Vendedores oportunidadId={o.id} vendedores={o.vendedores} miembros={miembros} />}
               </div>
             ))

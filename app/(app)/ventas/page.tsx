@@ -3,6 +3,7 @@ import { SinEmpresa } from "@/components/app/SinEmpresa";
 import { AnotarVisita } from "@/components/dominio/AnotarVisita";
 import { OfrecerRecorrido } from "@/components/recorrido/Recorridos";
 import { clientesCortos, miembrosActivos, oportunidades, productosActivos } from "@/lib/datos";
+import { planesActivos } from "@/lib/datos-cobros";
 import { obtenerContexto } from "@/lib/sesion";
 import { VentasLista } from "./VentasLista";
 
@@ -12,11 +13,13 @@ export default async function Ventas() {
   const ctx = await obtenerContexto();
   if (!ctx) return <SinEmpresa />;
 
-  const [lista, productos, miembros, clientes] = await Promise.all([
+  const esGerente = ctx.rol === "gerente";
+  const [lista, productos, miembros, clientes, planes] = await Promise.all([
     oportunidades(ctx.empresa.id),
     productosActivos(ctx.empresa.id),
     ctx.rol === "gerente" ? miembrosActivos(ctx.empresa.id) : Promise.resolve([]),
     clientesCortos(ctx.empresa.id),
+    esGerente ? planesActivos(ctx.empresa.id) : Promise.resolve([]),
   ]);
 
   return (
@@ -33,6 +36,7 @@ export default async function Ventas() {
         miembros={miembros}
         esGerente={ctx.rol === "gerente"}
         quien={ctx.nombre.split(" ")[0]!}
+        gerencia={esGerente ? { planes, miembros } : undefined}
       />
       <AnotarVisita clientes={clientes} productos={productos} />
       <OfrecerRecorrido id="ventas" />

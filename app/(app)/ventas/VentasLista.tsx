@@ -6,6 +6,7 @@ import { Chip } from "@/components/ui/Chip";
 import { Vacio } from "@/components/ui/Vacio";
 import { ETAPAS_ABIERTAS, NOMBRE_ETAPA } from "@/lib/dominio/etapas";
 import type { Miembro, OportunidadFila, Producto } from "@/lib/datos";
+import type { Plan } from "@/lib/datos-cobros";
 
 type Props = {
   oportunidades: OportunidadFila[];
@@ -13,10 +14,11 @@ type Props = {
   miembros: Miembro[];
   esGerente: boolean;
   quien: string;
+  gerencia?: { planes: Plan[]; miembros: Miembro[] };
 };
 
 /** Lista agrupada por etapa (no tablero arrastrable en el celular), con filtros. */
-export function VentasLista({ oportunidades, productos, miembros, esGerente, quien }: Props) {
+export function VentasLista({ oportunidades, productos, miembros, esGerente, quien, gerencia }: Props) {
   const [producto, setProducto] = useState<string | null>(null);
   const [vendedor, setVendedor] = useState<string>("");
   const [sinFecha, setSinFecha] = useState(false);
@@ -104,7 +106,7 @@ export function VentasLista({ oportunidades, productos, miembros, esGerente, qui
                 <span className="numeros rounded-full bg-suave px-2 text-chico">{g.lista.length}</span>
               </h2>
               {g.lista.map((o) => (
-                <TarjetaOportunidad key={o.id} o={o} quien={quien} primero={o.id === primeraId} />
+                <TarjetaOportunidad key={o.id} o={o} quien={quien} primero={o.id === primeraId} gerencia={gerencia} />
               ))}
             </section>
           ))}

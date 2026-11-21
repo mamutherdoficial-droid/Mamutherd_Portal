@@ -1,7 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ArrowRight, CalendarClock, X } from "lucide-react";
+import { ArrowRight, CalendarClock, Trophy, X } from "lucide-react";
 import { useAvisar } from "@/components/ui/Avisos";
 import { Boton } from "@/components/ui/Boton";
 import { Estado } from "@/components/ui/Chip";
@@ -11,7 +11,9 @@ import { Hoja } from "@/components/ui/Hoja";
 import { cambiarEtapa, marcarPerdida, programarSeguimiento } from "@/lib/acciones/ventas";
 import { NOMBRE_ETAPA, abierta, esEtapa, siguienteEtapa } from "@/lib/dominio/etapas";
 import { diaBogota, sumarDias, textoFecha } from "@/lib/dominio/semanas";
-import type { OportunidadFila } from "@/lib/datos";
+import type { Miembro, OportunidadFila } from "@/lib/datos";
+import type { Plan } from "@/lib/datos-cobros";
+import { AsistenteGanada } from "./AsistenteGanada";
 import { BotonWhatsapp } from "./BotonWhatsapp";
 
 type Props = {
@@ -20,13 +22,16 @@ type Props = {
   /** El primero de la lista lleva los data-recorrido del product tour de Ventas. */
   primero?: boolean;
   mostrarCliente?: boolean;
+  /** Solo gerente: habilita "Ganada" (asistente de cobro). */
+  gerencia?: { planes: Plan[]; miembros: Miembro[] };
 };
 
-export function TarjetaOportunidad({ o, quien, primero, mostrarCliente = true }: Props) {
+export function TarjetaOportunidad({ o, quien, primero, mostrarCliente = true, gerencia }: Props) {
   const avisar = useAvisar();
   const [pendiente, iniciar] = useTransition();
   const [perdiendo, setPerdiendo] = useState(false);
   const [programando, setProgramando] = useState(false);
+  const [ganando, setGanando] = useState(false);
   const sig = siguienteEtapa(o.etapa);
   const estaAbierta = abierta(o.etapa);
   const fecha = o.proxima_fecha ? textoFecha(o.proxima_fecha) : null;
@@ -107,6 +112,16 @@ export function TarjetaOportunidad({ o, quien, primero, mostrarCliente = true }:
               Pasar a {NOMBRE_ETAPA[sig]}
             </Boton>
           )}
+          {gerencia && (
+            <Boton
+              variante="secundario"
+              onClick={() => setGanando(true)}
+              disabled={pendiente}
+              icono={<Trophy size={20} strokeWidth={1.75} aria-hidden />}
+            >
+              Ganada
+            </Boton>
+          )}
           <Boton
             variante="fantasma"
             onClick={() => setPerdiendo(true)}
@@ -130,6 +145,10 @@ export function TarjetaOportunidad({ o, quien, primero, mostrarCliente = true }:
 
       <HojaPerdida abierta={perdiendo} alCerrar={() => setPerdiendo(false)} o={o} />
       <HojaSeguimiento abierta={programando} alCerrar={() => setProgramando(false)} o={o} />
+      {/* Solo existe mientras está abierto: no se dibuja un asistente escondido por cada tarjeta. */}
+      {gerencia && estaAbierta && ganando && (
+        <AsistenteGanada o={o} planes={gerencia.planes} miembros={gerencia.miembros} abierta alCerrar={() => setGanando(false)} />
+      )}
     </article>
   );
 }

@@ -16,6 +16,28 @@ Dudas:
 - …
 ```
 
+## 2026-11-21 · Fase 2 · Cobros, mensualidades y comisiones · CERRADA
+`/verificar`: lint, tipos, Vitest (24), e2e (48/48, celular y PC), pruebas SQL (80 asserts en la nube, base + Fases 1 y 2),
+RLS en las 18 tablas, `anon` sin permisos, sin llaves en el código, `pnpm audit` limpio, ninguna comisión desde la app.
+Hecho:
+- Migración `20261130000000_cobros.sql`: trigger `cerrada_en` (respeta una fecha dada a mano), motivo de pérdida no vacío,
+  `comisiones.ajustada_en` y `ganar_oportunidad` (D-038). Prueba `supabase/pruebas/fase2_test.sql`.
+- Asistente **Ganada** (gerente) en la tarjeta de venta: vendedores → instalación → mensualidad → anticipo del 50%.
+  Solo existe mientras está abierto.
+- `/cobros`: pestañas Por cobrar · Vencidos · Pagados; tabla en PC; Registrar pago (no deja pagar más que el saldo ni con
+  fecha futura); ver y anular pagos con confirmación; recordatorio por WhatsApp con el saldo; Generar mensualidades
+  (dice "Ya estaban creadas" o "No hay planes mensuales activos").
+- `/equipo` (D-036) y `/equipo/[id]`: le debemos / ya le pagamos, elegir qué se paga y marcar con fecha y medio,
+  alerta "Descuenta del próximo pago" con "Ya lo descontó".
+- `/mis-comisiones` (ayudante) y saldo en la ficha del cliente (solo gerente).
+- Tutorial: tours de Cobros, Equipo y Mis comisiones; **Hotspot** en "Generar mensualidades" (componente nuevo).
+- e2e: ayudante de prueba (correo con `+ayudante`), planes y reglas en la empresa "pruebas-e2e".
+Notas de las pruebas:
+- El emulador de celular de Playwright a veces deja la vista corrida y "tapa" botones en corridas largas. En la página
+  medida no hay nada más ancho que la pantalla; en la Fase 2 dos botones se activan con teclado (la Fase 1 ya prueba el toque).
+Para que Jacobo pruebe (con las demás al final):
+- Los 5 pasos de "Prueba en el celular" de la Fase 2 en `docs/PLAN.md`.
+
 ## 2026-11-20 · Fase 1 · Clientes, ventas, Anotar visita y tutorial · CERRADA
 `/verificar`: lint, tipos, Vitest (20), e2e (40/40), RLS en las 18 tablas, `anon` sin permisos, sin llaves en el código,
 `pnpm audit` limpio, sin dinero en decimales ni comisiones desde la app; pruebas SQL otra vez en verde en la nube.

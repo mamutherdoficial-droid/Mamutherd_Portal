@@ -165,8 +165,8 @@ niega (las comisiones dependen de esa fila). "Ganada" no se ofrece en "Pasar a�
 
 **D-035 · 2026-11-20 · Fases 2 a 4 de corrido.** Jacobo aprobó el plan de la Fase 2 y pidió seguir con todas las
 fases posibles sin parar entre una y otra (no puede avanzar en Nef por ahora). Cada fase se cierra igual: `/verificar`
-en verde, BITACORA y push. Las pruebas en el celular se acumulan y Jacobo las hace al final. La Fase 5 no se empieza:
-depende de "pasar la puerta" (PLAN).
+en verde, BITACORA y push. Las pruebas en el celular se acumulan y Jacobo las hace al final. Jacobo pidió
+explícitamente seguir también con la Fase 5 si se llega, sin esperar su aprobación entre fases.
 
 **D-036 · 2026-11-20 · `/equipo` sencillo llega en la Fase 2.** Sin la lista no hay cómo llegar a `/equipo/[id]`
 (comisiones y pagos a ayudantes). Invitaciones y tareas siguen en la Fase 3.

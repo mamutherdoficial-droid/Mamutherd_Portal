@@ -21,7 +21,7 @@ export type Seccion = {
   fase: number;
 };
 
-export const FASE_ACTUAL = 1;
+export const FASE_ACTUAL = 2;
 
 export const SECCIONES: Seccion[] = [
   { ruta: "/hoy", etiqueta: "Hoy", icono: "hoy", roles: ["gerente", "ayudante"], fase: 0 },
@@ -29,7 +29,7 @@ export const SECCIONES: Seccion[] = [
   { ruta: "/clientes", etiqueta: "Clientes", icono: "clientes", roles: ["gerente", "ayudante"], fase: 1 },
   { ruta: "/cobros", etiqueta: "Cobros", icono: "cobros", roles: ["gerente"], fase: 2 },
   { ruta: "/mis-comisiones", etiqueta: "Comisiones", icono: "comisiones", roles: ["ayudante"], fase: 2 },
-  { ruta: "/equipo", etiqueta: "Equipo", icono: "equipo", roles: ["gerente"], fase: 3 },
+  { ruta: "/equipo", etiqueta: "Equipo", icono: "equipo", roles: ["gerente"], fase: 2 },
   { ruta: "/tareas", etiqueta: "Tareas", icono: "tareas", roles: ["gerente", "ayudante"], fase: 3 },
   { ruta: "/inventario", etiqueta: "Inventario", icono: "inventario", roles: ["gerente"], fase: 4 },
   { ruta: "/metas", etiqueta: "Metas", icono: "metas", roles: ["gerente", "ayudante"], fase: 4 },

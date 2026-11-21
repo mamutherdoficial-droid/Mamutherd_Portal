@@ -78,7 +78,41 @@ export const RECORRIDOS: Recorrido[] = [
       { titulo: "Nunca sin seguimiento", texto: "Toda venta abierta necesita próxima fecha para salir en Hoy.", objetivo: "ventas-fecha" },
     ],
   },
+  {
+    id: "cobros",
+    version: 1,
+    tipo: "tour",
+    roles: ["gerente"],
+    pasos: [
+      { titulo: "Lo que te deben", texto: "Por cobrar, vencidos y pagados. Empieza siempre por los vencidos.", objetivo: "cobros-pestanas" },
+      { titulo: "Registra lo que entró", texto: "Registra lo que ya entró por Nequi o el banco.", objetivo: "cobros-pagar" },
+      { titulo: "Recuérdale por WhatsApp", texto: "El mensaje sale escrito con el saldo; revísalo y envíalo.", objetivo: "cobros-whatsapp" },
+      { titulo: "Mensualidades del mes", texto: "El día 1 tócalo: crea el cobro de cada plan mensual.", objetivo: "cobros-mensualidades" },
+    ],
+  },
+  {
+    id: "equipo",
+    version: 1,
+    tipo: "tour",
+    roles: ["gerente"],
+    pasos: [
+      { titulo: "Lo que le debes a cada uno", texto: "Comisiones y trabajos pendientes de cada persona del equipo.", objetivo: "equipo-lista" },
+    ],
+  },
+  {
+    id: "mis-comisiones",
+    version: 1,
+    tipo: "tour",
+    roles: ["ayudante"],
+    pasos: [
+      { titulo: "Tu plata", texto: "Lo que te debemos y lo que ya te pagamos.", objetivo: "comisiones-totales" },
+      { titulo: "Cada comisión", texto: "Aparece cuando el negocio paga, no antes.", objetivo: "comisiones-lista" },
+    ],
+  },
 ];
+
+/** Hotspots (punto ámbar sobre algo nuevo). Se guardan en recorridos_vistos con este id. */
+export const HOTSPOTS = [{ id: "hotspot-mensualidades", version: 1 }] as const;
 
 /** Pasos guiados dentro de "Anotar visita" (continúan el recorrido "primera-visita"). */
 export const PASOS_FORMULARIO_VISITA = [

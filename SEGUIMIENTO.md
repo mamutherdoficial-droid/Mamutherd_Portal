@@ -9,7 +9,7 @@ tú marcas las columnas "Probada en el celular" y "Revisada por Claude".
 | --- | --- | --- | --- | --- |
 | 0 · Base, estética de Mamut, entrar, celular y PC | Vie 20 nov | Cerrada | Sí (20 nov) | Sí (20 nov) |
 | 1 · Clientes, ventas, Anotar visita, tutorial | Lun 23 nov (adelantada al 20) | Cerrada | Sí (20 nov, /verificar) | Sí (20 nov) |
-| 2 · Cobros, mensualidades, comisiones | Lun 30 nov | Pendiente | — | — |
+| 2 · Cobros, mensualidades, comisiones | Lun 30 nov (adelantada al 21) | Cerrada en código | Sí (21 nov, /verificar) | Pendiente |
 | 3 · Equipo, tareas, invitaciones | Lun 7 dic | Pendiente | — | — |
 | 4 · Inventario, metas, Hoy completo, /semana | Lun 14 dic | Pendiente | — | — |
 | 4b · Subir extracto y conciliar | Lun 21 dic | Pendiente | — | — |

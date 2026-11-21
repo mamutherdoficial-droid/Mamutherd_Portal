@@ -15,6 +15,10 @@ type Estado = {
   ofrecer: (id: string) => void;
   /** Vuelve a empezar el tutorial desde la bienvenida. */
   reiniciar: () => void;
+  /** Hotspots: ¿falta verlo? (se esconde mientras corre otro recorrido). */
+  hotspotPendiente: (id: string, version: number) => boolean;
+  /** Hotspots: marcarlo visto (se guarda en recorridos_vistos como cualquier recorrido). */
+  verHotspot: (id: string, version: number) => void;
 };
 
 const Contexto = createContext<Estado>({
@@ -22,6 +26,8 @@ const Contexto = createContext<Estado>({
   terminarVisitaGuiada: () => {},
   ofrecer: () => {},
   reiniciar: () => {},
+  hotspotPendiente: () => false,
+  verHotspot: () => {},
 });
 
 export function useRecorridos() {
@@ -100,12 +106,19 @@ export function ProveedorRecorridos({
     if (r) registrar(r, false);
   }, [guiandoVisita, registrar]);
 
-  const valor = useMemo(() => ({ guiandoVisita, terminarVisitaGuiada, ofrecer, reiniciar }), [
-    guiandoVisita,
-    terminarVisitaGuiada,
-    ofrecer,
-    reiniciar,
-  ]);
+  const hotspotPendiente = useCallback(
+    (id: string, version: number) => !activo && !guiandoVisita && (vistos[id] ?? 0) < version,
+    [activo, guiandoVisita, vistos],
+  );
+  const verHotspot = useCallback((id: string, version: number) => {
+    setVistos((v) => ({ ...v, [id]: version }));
+    void marcarRecorrido(id, version, false);
+  }, []);
+
+  const valor = useMemo(
+    () => ({ guiandoVisita, terminarVisitaGuiada, ofrecer, reiniciar, hotspotPendiente, verHotspot }),
+    [guiandoVisita, terminarVisitaGuiada, ofrecer, reiniciar, hotspotPendiente, verHotspot],
+  );
 
   return (
     <Contexto.Provider value={valor}>

@@ -31,3 +31,11 @@ export function mensajeSeguimiento({ contacto, negocio, producto, quien }: Segui
   const saludo = contacto ? `Hola ${contacto.split(" ")[0]}` : "Hola";
   return `${saludo}, te habla ${quien} de Mamut Herd. Te escribo por lo que hablamos de ${producto} para ${negocio}. ¿Cuándo te queda bien que pase?`;
 }
+
+type Recordatorio = { contacto?: string | null; negocio: string; concepto: string; saldo: string; vence: string; quien: string };
+
+/** Recordatorio de cobro (editable antes de abrir WhatsApp). */
+export function mensajeCobro({ contacto, negocio, concepto, saldo, vence, quien }: Recordatorio): string {
+  const saludo = contacto ? `Hola ${contacto.split(" ")[0]}` : "Hola";
+  return `${saludo}, te habla ${quien} de Mamut Herd. Te recuerdo el pago de ${concepto.toLowerCase()} de ${negocio}: ${saldo}, con fecha ${vence}. Puedes pagar por Nequi o Bancolombia. ¡Gracias!`;
+}

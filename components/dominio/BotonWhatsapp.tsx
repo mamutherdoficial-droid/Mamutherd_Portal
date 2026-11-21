@@ -12,12 +12,14 @@ type Props = {
   producto: string;
   quien: string;
   compacto?: boolean;
+  /** Otro mensaje (p. ej. recordatorio de cobro); si no, el de seguimiento. */
+  mensajeInicial?: string;
 };
 
 /** WhatsApp sin API (D-006): el mensaje se escribe aquí, se puede editar y se abre WhatsApp para enviarlo. */
-export function BotonWhatsapp({ whatsapp, contacto, negocio, producto, quien, compacto }: Props) {
+export function BotonWhatsapp({ whatsapp, contacto, negocio, producto, quien, compacto, mensajeInicial }: Props) {
   const [abierta, setAbierta] = useState(false);
-  const [mensaje, setMensaje] = useState(() => mensajeSeguimiento({ contacto, negocio, producto, quien }));
+  const [mensaje, setMensaje] = useState(() => mensajeInicial ?? mensajeSeguimiento({ contacto, negocio, producto, quien }));
   const numero = mostrarWhatsapp(whatsapp);
 
   return (

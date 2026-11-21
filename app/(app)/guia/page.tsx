@@ -26,7 +26,7 @@ const PASOS = [
   },
   {
     titulo: "Registra el pago",
-    hace: "Cuando el negocio paga, regístralo en Cobros (llega en la fase 2).",
+    hace: "Cuando el negocio paga, regístralo en Cobros. La primera venta se cierra con «Ganada».",
     ve: "Lo que te deben y lo que ya entró.",
     truco: "La comisión aparece cuando el negocio paga, no antes.",
   },
