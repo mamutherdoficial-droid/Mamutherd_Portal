@@ -7,6 +7,7 @@ import { Boton } from "@/components/ui/Boton";
 import { Vacio } from "@/components/ui/Vacio";
 import { buscarClientes, clientesCortos, productosActivos } from "@/lib/datos";
 import { obtenerContexto } from "@/lib/sesion";
+import { ImportarExportar } from "./ImportarExportar";
 
 export const metadata: Metadata = { title: "Clientes" };
 
@@ -76,6 +77,8 @@ export default async function Clientes({ searchParams }: PageProps<"/clientes">)
           ))}
         </ul>
       )}
+
+      {ctx.rol === "gerente" && <ImportarExportar />}
 
       <AnotarVisita clientes={cortos} productos={productos} />
     </div>

@@ -192,3 +192,14 @@ anonimizado en las pruebas.
 **D-041 · 2026-11-21 · "No es este" deja elegir otro cobro; "Ignorar" descarta.** El PLAN decía que ambos descartan;
 en la práctica, si la propuesta falla casi siempre es otro cobro del mismo valor, así que "No es este" abre la lista
 (primero los del mismo valor). Nada se registra sin "Confirmar".
+
+**D-042 · 2026-11-21 · Registro de empresas cerrado por defecto.** La Fase 5 se adelantó a la "puerta" por pedido de
+Jacobo (D-035), así que el registro público queda apagado: `/registro` dice "todavía no está abierto" hasta que en
+Vercel se ponga `REGISTRO_ABIERTO=si`. Un gerente que ya existe sí puede crear otra empresa desde Ajustes. En la base,
+`crear_empresa` deja máximo 3 empresas por cuenta (freno contra abusos); quien cree una no ve nada de otras (RLS).
+Ojo: Supabase deja crear cuentas con la llave pública; si se quiere cerrar del todo, se apaga "Allow new users to sign up"
+en Supabase (pero las invitaciones de la Fase 3 la necesitan).
+
+**D-043 · 2026-11-21 · Lo que NO se hizo de la Fase 5 y por qué.** Planes y cobro del propio portal y su nombre
+comercial (D-009): dependen de precios y nombre que decide Jacobo. Pagos que se marcan solos (D-018): requieren la SAS
+constituida y contrato con un intermediario. Unión con Tino: solo si hay clientes que usen ambos. Quedan en el PLAN.

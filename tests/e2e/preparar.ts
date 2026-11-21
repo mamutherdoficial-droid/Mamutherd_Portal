@@ -38,6 +38,9 @@ export default async function preparar() {
   const ayudanteUsuarioId = await usuario(correoAyudante(correo));
   const invitadaUsuarioId = await usuario(correoInvitada(correo));
 
+  // 1b. Empresas que crean las pruebas de registro (slug "e2e-…"): se borran (solo datos de prueba).
+  await admin.from("empresas").delete().like("slug", "e2e-%");
+
   // 2. Empresa de pruebas
   const { data: empresa, error: e1 } = await admin
     .from("empresas")

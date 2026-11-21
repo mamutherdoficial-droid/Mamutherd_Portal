@@ -13,7 +13,7 @@ tú marcas las columnas "Probada en el celular" y "Revisada por Claude".
 | 3 · Equipo, tareas, invitaciones | Lun 7 dic (adelantada al 21) | Cerrada en código | Sí (21 nov, /verificar) | Pendiente |
 | 4 · Inventario, metas, Hoy completo, /semana | Lun 14 dic (adelantada al 21) | Cerrada en código | Sí (21 nov, /verificar) | Pendiente |
 | 4b · Subir extracto y conciliar | Lun 21 dic (adelantada al 21 nov) | Cerrada en código | Sí (21 nov, /verificar) | Pendiente |
-| 5 · Para otros gerentes | Si pasa la puerta | Pendiente | — | — |
+| 5 · Para otros gerentes | Si pasa la puerta (adelantada al 21 nov) | Parte construible hecha (registro cerrado, D-042) | Sí (21 nov, /verificar) | Pendiente |
 
 Estados: Pendiente · En curso · Cerrada · Pasa al lunes siguiente (con lo que falta en BITACORA).
 

@@ -16,6 +16,24 @@ Dudas:
 - …
 ```
 
+## 2026-11-21 · Fase 5 (parte construible) · Producto para otros gerentes · CERRADA EN CÓDIGO
+`/verificar`: lint, tipos, Vitest (48), e2e (82 en verde, 2 saltadas a propósito), pruebas SQL (149 asserts en la nube),
+RLS en las 22 tablas, `anon` sin permisos, sin llaves en el código, `pnpm audit` sin vulnerabilidades.
+Hecho:
+- Migración `20261228000000_producto.sql`: `crear_empresa` (empresa + gerente; slug sin tildes y único; máximo 3 por
+  cuenta) y `exportaciones` (registro de cada exportación, solo gerente). Prueba `fase5_test.sql`.
+- `/registro`: crear cuenta y empresa con plantilla (Servicio con mensualidad, Venta por proyecto, En blanco).
+  **Cerrado por defecto** (D-042); un gerente existente crea otra empresa desde Ajustes.
+- Selector de empresa en Ajustes (cookie `empresa_activa`; si no pertenece, usa la primera).
+- Clientes: importar desde .csv (no duplica por nombre) y exportar .csv con registro (Ley 1581).
+- Portada pública en `/` (sin sesión): portada, 5 pasos interactivos, la semana, qué ve cada rol, comisiones con un
+  ejemplo, cada vez más automático, preguntas frecuentes y Entrar. Sin testimonios ni cifras inventadas.
+  Con sesión, `/` lleva a Hoy. Los 5 pasos salen de `lib/guia.ts` (los mismos de la Guía).
+No hecho (D-043): planes y cobro del portal, nombre comercial, pagos automáticos, unión con Tino.
+Para Jacobo:
+- En Supabase → Authentication → URL Configuration, agregar `/registro` a Redirect URLs (junto a `/unirme`).
+- Cuando quiera abrir el registro: Vercel → Settings → Environment Variables → `REGISTRO_ABIERTO` = `si` y redeploy.
+
 ## 2026-11-21 · Fase 4b · Subir extracto y conciliar · CERRADA
 `/verificar`: lint, tipos, Vitest (43), e2e (70 en verde, 2 saltadas a propósito), pruebas SQL (135 asserts en la nube),
 RLS en las 21 tablas, `anon` sin permisos, `pnpm audit` sin vulnerabilidades.

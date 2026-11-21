@@ -21,7 +21,7 @@ export type Seccion = {
   fase: number;
 };
 
-export const FASE_ACTUAL = 4;
+export const FASE_ACTUAL = 5;
 
 export const SECCIONES: Seccion[] = [
   { ruta: "/hoy", etiqueta: "Hoy", icono: "hoy", roles: ["gerente", "ayudante"], fase: 0 },

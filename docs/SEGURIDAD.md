@@ -30,7 +30,7 @@
 
 - Todos entran con correo y contraseña (mínimo 8 caracteres). "Olvidé mi contraseña" usa el correo de Supabase.
 - En Supabase → Authentication → URL Configuration: **Site URL** = la URL de Vercel, y en **Redirect URLs**
-  esa URL más `/entrar/nueva-clave` y `/unirme`. Sin esto, los correos llevan a `localhost`.
+  esa URL más `/entrar/nueva-clave`, `/unirme` y `/registro`. Sin esto, los correos llevan a `localhost`.
 - Invitaciones (fase 3): token aleatorio de un solo uso que vence en 7 días; en la base se guarda solo su hash.
   Se manda por WhatsApp; no se necesita `service_role`.
 
