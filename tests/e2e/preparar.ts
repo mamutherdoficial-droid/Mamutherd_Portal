@@ -117,6 +117,19 @@ export default async function preparar() {
   );
   if (er) throw er;
 
+  // 4c. Inventario (Fase 4): los mismos ítems que Mamut, sin movimientos de corridas anteriores.
+  const { error: ein } = await admin.from("inventario_items").upsert(
+    [
+      { empresa_id: empresa.id, nombre: "Sticker NFC NTAG213", costo_unitario: 1000, stock_minimo: 20 },
+      { empresa_id: empresa.id, nombre: "Soporte acrílico de mesa", stock_minimo: 6 },
+      { empresa_id: empresa.id, nombre: "Placa de caja", stock_minimo: 1 },
+    ],
+    { onConflict: "empresa_id,nombre" },
+  );
+  if (ein) throw ein;
+  const { error: emv } = await admin.from("inventario_movimientos").delete().eq("empresa_id", empresa.id);
+  if (emv) throw emv;
+
   // 5. Empezar limpio: borra los negocios de corridas anteriores (solo de "pruebas-e2e").
   const { error: e4 } = await admin.from("clientes").delete().eq("empresa_id", empresa.id);
   if (e4) throw e4;

@@ -16,6 +16,26 @@ Dudas:
 - …
 ```
 
+## 2026-11-21 · Fase 4 · Inventario, metas, Hoy completo y resumen del domingo · CERRADA
+`/verificar`: lint, tipos, Vitest (31), e2e (63 en verde, 1 saltada a propósito), pruebas SQL (123 asserts en la nube),
+RLS en las 19 tablas, `anon` sin permisos, `pnpm audit` limpio. `/semana`: 250–307 ms la página; `resumen_semana` 3,3 ms
+con 500 actividades (criterio: < 1 s).
+Hecho:
+- Migración `20261214000000_inventario_metas.sql`: `guardar_meta` (crea o actualiza sin duplicar; solo gerente; la semana
+  empieza el lunes), `resumen_semana` (todo el domingo en una consulta) e índices. Prueba `fase4_test.sql`.
+- `/inventario` (gerente): stock con alerta, Compra (con costo), Daño, Ajuste y **Registrar instalación** que propone
+  −7 stickers, −6 soportes y −1 placa y el cliente ganado más reciente. Movimientos recientes.
+- `/metas`: avance de la semana (barras), Poner metas (esta semana o la siguiente; empresa o persona), semanas
+  anteriores con "Cumplida / No cumplida".
+- `/hoy` completo: tablero de dos columnas en PC con seguimientos, meta de la semana, plata (por cobrar, vencido,
+  por pagar al equipo), stock bajo y mis tareas.
+- `/semana` (gerente): visitas, dueños y clientes contra la meta; plata; objeciones más repetidas (4 semanas); metas;
+  stock bajo; semanas anteriores y siguientes.
+- Tutorial: tours de Inventario, Metas y Semana. Guía: el paso 5 ya apunta a "Resumen de la semana".
+- Formularios por ítem y asistentes se montan solo al abrirse (antes había uno escondido por tarjeta).
+Para que Jacobo pruebe (con las demás al final): los 3 pasos de la Fase 4 en `docs/PLAN.md`.
+No incluye la Fase 4b (extractos del banco): queda como siguiente.
+
 ## 2026-11-21 · Fase 3 · Equipo, tareas y acceso de ayudantes · CERRADA
 `/verificar`: lint, tipos, Vitest (28), e2e (55 en verde, 1 saltada a propósito), pruebas SQL (104 asserts en la nube),
 RLS en las 19 tablas, `anon` sin permisos, sin `service_role` en la app, `pnpm audit` limpio.

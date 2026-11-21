@@ -32,7 +32,7 @@ const PASOS = [
   },
   {
     titulo: "Revisa la semana",
-    hace: "El domingo mira cómo te fue (llega en la fase 4).",
+    hace: "El domingo abre «Resumen de la semana» (desde Hoy o Metas).",
     ve: "Visitas, dueños y clientes contra la meta.",
     truco: "15 minutos de revisión el domingo valen por toda la semana.",
   },

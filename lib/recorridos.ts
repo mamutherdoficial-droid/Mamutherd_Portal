@@ -130,6 +130,37 @@ export const RECORRIDOS: Recorrido[] = [
       { titulo: "Cada comisión", texto: "Aparece cuando el negocio paga, no antes.", objetivo: "comisiones-lista" },
     ],
   },
+  {
+    id: "inventario",
+    version: 1,
+    tipo: "tour",
+    roles: ["gerente"],
+    pasos: [
+      { titulo: "Tu stock", texto: "Cuántos tags, soportes y placas tienes. En rojo, toca comprar.", objetivo: "inventario-items" },
+      { titulo: "Registra la compra", texto: "Cuando compres, anótalo aquí con lo que pagaste.", objetivo: "inventario-comprar" },
+      { titulo: "Cada instalación", texto: "Al instalar en un negocio, el stock baja solo.", objetivo: "inventario-instalar" },
+    ],
+  },
+  {
+    id: "metas",
+    version: 1,
+    tipo: "tour",
+    roles: ["gerente", "ayudante"],
+    pasos: [
+      { titulo: "Cómo vas", texto: "Las barras suben solas con cada visita anotada.", objetivo: "metas-avance" },
+      { titulo: "Pon las metas", texto: "El domingo pon las de la semana siguiente.", objetivo: "metas-poner" },
+    ],
+  },
+  {
+    id: "semana",
+    version: 1,
+    tipo: "tour",
+    roles: ["gerente"],
+    pasos: [
+      { titulo: "Tu revisión del domingo", texto: "Visitas, dueños y clientes contra la meta.", objetivo: "semana-cifras" },
+      { titulo: "Ajusta el guion", texto: "Lo que más te dicen al perder una venta.", objetivo: "semana-objeciones" },
+    ],
+  },
 ];
 
 /** Hotspots (punto ámbar sobre algo nuevo). Se guardan en recorridos_vistos con este id. */
