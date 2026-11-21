@@ -710,11 +710,17 @@ isOneToOne: false
 "generar_mensualidades":
 { Args: { "p_empresa": string,"p_mes": string }; Returns: number
                            },
+"guardar_meta":
+{ Args: { "p_empresa": string,"p_indicador": string,"p_miembro"?: string,"p_objetivo": number,"p_producto"?: string,"p_semana": string }; Returns: string
+                           },
 "hash_token":
 { Args: { "p_token": string }; Returns: string
                            },
 "mi_miembro":
 { Args: { "p_empresa": string }; Returns: string
+                           },
+"resumen_semana":
+{ Args: { "p_empresa": string,"p_lunes": string }; Returns: Json
                            }
           }
           Enums: {
