@@ -167,6 +167,32 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"extractos": {
+                  Row: {
+                    "archivo": string,"banco": string,"empresa_id": string,"filas": number,"id": string,"nuevos": number,"subido_en": string,"subido_por": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "archivo": string,"banco": string,"empresa_id": string,"filas"?: number,"id"?: string,"nuevos"?: number,"subido_en"?: string,"subido_por"?: string | null
+                  }
+                  Update: {
+                    "archivo"?: string,"banco"?: string,"empresa_id"?: string,"filas"?: number,"id"?: string,"nuevos"?: number,"subido_en"?: string,"subido_por"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "extractos_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "extractos_subido_por_fkey"
+      columns: ["subido_por"]
+isOneToOne: false
+      referencedRelation: "miembros"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"inventario_items": {
                   Row: {
                     "activo": boolean,"costo_unitario": number | null,"empresa_id": string,"id": string,"nombre": string,"stock_minimo": number,"unidad": string
@@ -312,6 +338,56 @@ isOneToOne: false
       columns: ["empresa_id"]
 isOneToOne: false
       referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"movimientos_banco": {
+                  Row: {
+                    "banco": string,"cobro_id": string | null,"creado_en": string,"descripcion": string,"empresa_id": string,"estado": string,"extracto_id": string | null,"fecha": string,"huella": string,"id": string,"pago_id": string | null,"referencia": string | null,"revisado_en": string | null,"revisado_por": string | null,"valor": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "banco": string,"cobro_id"?: string | null,"creado_en"?: string,"descripcion"?: string,"empresa_id": string,"estado"?: string,"extracto_id"?: string | null,"fecha": string,"huella": string,"id"?: string,"pago_id"?: string | null,"referencia"?: string | null,"revisado_en"?: string | null,"revisado_por"?: string | null,"valor": number
+                  }
+                  Update: {
+                    "banco"?: string,"cobro_id"?: string | null,"creado_en"?: string,"descripcion"?: string,"empresa_id"?: string,"estado"?: string,"extracto_id"?: string | null,"fecha"?: string,"huella"?: string,"id"?: string,"pago_id"?: string | null,"referencia"?: string | null,"revisado_en"?: string | null,"revisado_por"?: string | null,"valor"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "movimientos_banco_cobro_id_fkey"
+      columns: ["cobro_id"]
+isOneToOne: false
+      referencedRelation: "cobros"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "movimientos_banco_cobro_id_fkey"
+      columns: ["cobro_id"]
+isOneToOne: false
+      referencedRelation: "v_cobros"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "movimientos_banco_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "movimientos_banco_extracto_id_fkey"
+      columns: ["extracto_id"]
+isOneToOne: false
+      referencedRelation: "extractos"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "movimientos_banco_pago_id_fkey"
+      columns: ["pago_id"]
+isOneToOne: false
+      referencedRelation: "pagos"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "movimientos_banco_revisado_por_fkey"
+      columns: ["revisado_por"]
+isOneToOne: false
+      referencedRelation: "miembros"
       referencedColumns: ["id"]
     }
                   ]
@@ -694,6 +770,9 @@ isOneToOne: false
                            },
 "anotar_visita":
 { Args: { "p_cliente_id"?: string,"p_empresa": string,"p_hablo_con_dueno"?: boolean,"p_nombre_negocio"?: string,"p_nota"?: string,"p_producto_id": string,"p_proxima_accion"?: string,"p_proxima_fecha"?: string,"p_resultado"?: string }; Returns: Json
+                           },
+"confirmar_movimiento":
+{ Args: { "p_cobro": string,"p_movimiento": string }; Returns: string
                            },
 "crear_invitacion":
 { Args: { "p_miembro": string }; Returns: string
