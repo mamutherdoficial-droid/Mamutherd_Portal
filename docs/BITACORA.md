@@ -16,7 +16,9 @@ Dudas:
 - …
 ```
 
-## 2026-11-20 · Fase 1 · Clientes, ventas, Anotar visita y tutorial
+## 2026-11-20 · Fase 1 · Clientes, ventas, Anotar visita y tutorial · CERRADA
+`/verificar`: lint, tipos, Vitest (20), e2e (40/40), RLS en las 18 tablas, `anon` sin permisos, sin llaves en el código,
+`pnpm audit` limpio, sin dinero en decimales ni comisiones desde la app. Jacobo probó Fases 0 y 1 en el celular: OK.
 Hecho:
 - Migraciones `20261123000000_anotar_visita.sql` (función en una transacción, D-031) y
   `20261123000100_recorridos_vistos.sql` (RLS: cada quien lo suyo). Aplicadas en la nube.
@@ -26,7 +28,7 @@ Hecho:
   `/clientes/[id]` (datos, editar, ventas, vendedores para el gerente, historial), WhatsApp con mensaje editable,
   `/guia` con los 5 pasos y "Hacer el recorrido otra vez".
 - Tutorial guiado propio (D-032): bienvenida (gerente y ayudante), primera visita guiada, product tour de Ventas.
-- Vitest: etapas, WhatsApp y fechas de seguimiento (21 pruebas en verde).
+- Vitest: etapas, WhatsApp y fechas de seguimiento (20 pruebas en verde).
 Probado:
 - Pruebas SQL de base + Fase 1 contra la nube en `begin … rollback`: en verde.
 - `pnpm typecheck` y `pnpm lint`: sin errores. `pnpm build`: OK.
@@ -36,8 +38,10 @@ Probado:
   perdía el toque mientras la tarjeta se mudaba de grupo; la capa oscura del tutorial tapaba el botón resaltado
   (ahora deja pasar el toque por el hueco); dos pruebas estaban mal planteadas.
 Falta:
-- `/verificar` de la fase.
-- Prueba en el celular de Jacobo (Fases 0 y 1 juntas, D-030).
+- Endurecer en la próxima migración (Fase 2): `motivo_perdida` no vacío en la base (hoy la base exige que no sea
+  null y la app exige 3 letras; un texto vacío por fuera de la app pasaría).
+- Volver a correr las pruebas SQL cuando el CLI de Supabase tenga sesión en la cuenta del portal (hoy tiene otra);
+  no cambió ningún SQL desde la corrida en verde de las 11:33.
 Para que Jacobo pruebe:
 - Los 5 pasos de "Prueba en el celular" de la Fase 1 en `docs/PLAN.md`.
 
