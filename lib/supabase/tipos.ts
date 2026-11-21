@@ -167,6 +167,32 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"exportaciones": {
+                  Row: {
+                    "creado_en": string,"empresa_id": string,"filas": number,"id": string,"miembro_id": string | null,"tipo": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "creado_en"?: string,"empresa_id": string,"filas"?: number,"id"?: string,"miembro_id"?: string | null,"tipo": string
+                  }
+                  Update: {
+                    "creado_en"?: string,"empresa_id"?: string,"filas"?: number,"id"?: string,"miembro_id"?: string | null,"tipo"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "exportaciones_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exportaciones_miembro_id_fkey"
+      columns: ["miembro_id"]
+isOneToOne: false
+      referencedRelation: "miembros"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"extractos": {
                   Row: {
                     "archivo": string,"banco": string,"empresa_id": string,"filas": number,"id": string,"nuevos": number,"subido_en": string,"subido_por": string | null
@@ -773,6 +799,9 @@ isOneToOne: false
                            },
 "confirmar_movimiento":
 { Args: { "p_cobro": string,"p_movimiento": string }; Returns: string
+                           },
+"crear_empresa":
+{ Args: { "p_mi_nombre": string,"p_nombre": string }; Returns: string
                            },
 "crear_invitacion":
 { Args: { "p_miembro": string }; Returns: string
