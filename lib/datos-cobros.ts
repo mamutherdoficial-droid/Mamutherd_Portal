@@ -254,3 +254,28 @@ export async function miembroPorId(empresaId: string, miembroId: string) {
   if (error) throw new Error(`miembro: ${error.message}`);
   return data;
 }
+
+// ---------- Conciliar con el banco (Fase 4b) ----------
+
+export type MovimientoPropuesto = {
+  id: string;
+  banco: string;
+  fecha: string;
+  descripcion: string;
+  referencia: string | null;
+  valor: number;
+};
+
+/** Ingresos del extracto que falta revisar (los más recientes primero). Solo gerente (RLS). */
+export async function movimientosPorRevisar(empresaId: string): Promise<MovimientoPropuesto[]> {
+  const supabase = await crearClienteServidor();
+  const { data, error } = await supabase
+    .from("movimientos_banco")
+    .select("id, banco, fecha, descripcion, referencia, valor")
+    .eq("empresa_id", empresaId)
+    .eq("estado", "propuesto")
+    .order("fecha", { ascending: false })
+    .limit(200);
+  if (error) throw new Error(`movimientos del banco: ${error.message}`);
+  return data ?? [];
+}

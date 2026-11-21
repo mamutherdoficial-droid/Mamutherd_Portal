@@ -72,3 +72,31 @@ export async function clienteGanado(nombre: string) {
     .insert({ empresa_id: empresa!.id, cliente_id: cli.id, producto_id: nef!.id, etapa: "ganada" });
   if (e2) throw e2;
 }
+
+/** Cliente ganado con un cobro de instalación pendiente por `valor` (para conciliar). */
+export async function clienteConCobro(nombre: string, valor: number) {
+  const { createClient } = await import("@supabase/supabase-js");
+  const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data: empresa } = await admin.from("empresas").select("id").eq("slug", "pruebas-e2e").single();
+  const { data: nef } = await admin.from("productos").select("id").eq("empresa_id", empresa!.id).eq("nombre", "Nef").single();
+  const { data: cli, error } = await admin.from("clientes").insert({ empresa_id: empresa!.id, nombre_negocio: nombre }).select("id").single();
+  if (error) throw error;
+  const { data: op } = await admin
+    .from("oportunidades")
+    .insert({ empresa_id: empresa!.id, cliente_id: cli.id, producto_id: nef!.id, etapa: "ganada" })
+    .select("id")
+    .single();
+  const hoy = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Bogota" }).format(new Date());
+  const { error: e3 } = await admin.from("cobros").insert({
+    empresa_id: empresa!.id,
+    cliente_id: cli.id,
+    oportunidad_id: op!.id,
+    concepto: "instalacion",
+    descripcion: "Instalación",
+    valor,
+    vence: hoy,
+  });
+  if (e3) throw e3;
+}

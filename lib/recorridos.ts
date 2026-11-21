@@ -164,7 +164,10 @@ export const RECORRIDOS: Recorrido[] = [
 ];
 
 /** Hotspots (punto ámbar sobre algo nuevo). Se guardan en recorridos_vistos con este id. */
-export const HOTSPOTS = [{ id: "hotspot-mensualidades", version: 1 }] as const;
+export const HOTSPOTS = [
+  { id: "hotspot-mensualidades", version: 1 },
+  { id: "hotspot-extracto", version: 1 },
+] as const;
 
 /** Pasos guiados dentro de "Anotar visita" (continúan el recorrido "primera-visita"). */
 export const PASOS_FORMULARIO_VISITA = [

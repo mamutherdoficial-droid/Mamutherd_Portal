@@ -16,6 +16,22 @@ Dudas:
 - …
 ```
 
+## 2026-11-21 · Fase 4b · Subir extracto y conciliar · CERRADA
+`/verificar`: lint, tipos, Vitest (43), e2e (70 en verde, 2 saltadas a propósito), pruebas SQL (135 asserts en la nube),
+RLS en las 21 tablas, `anon` sin permisos, `pnpm audit` sin vulnerabilidades.
+Hecho:
+- Migración `20261221000000_conciliar.sql`: `extractos` y `movimientos_banco` (solo ingresos, huella única por empresa,
+  estado propuesto/confirmado/descartado), RLS solo gerente, y `confirmar_movimiento` (crea el pago → el trigger crea las
+  comisiones; una sola vez; no deja pasar del saldo). Prueba `fase4b_test.sql`.
+- `lib/dominio/extractos/`: lector de CSV y .xlsx de Bancolombia y Nequi por títulos (D-040), montos y fechas
+  colombianas, huellas; propuestas "Coincide valor y nombre / Mismo valor, revisa el nombre / Sin coincidencia".
+  Vitest con ejemplos inventados en `tests/fixtures/extractos/`.
+- Panel **Conciliar con el banco**: al lado de la tabla en PC y en `/cobros/conciliar` en el celular. Subir extracto
+  (con Hotspot), Confirmar, No es este (elegir otro, D-041) e Ignorar. "Esos movimientos ya estaban" si se repite.
+- `read-excel-file` + `serverExternalPackages` (D-039).
+Para que Jacobo pruebe (en el PC, con las demás al final): los 3 pasos de la Fase 4b en `docs/PLAN.md`. Si el extracto
+real no se lee, mandarlo (o una copia con los datos cambiados) para ajustar el lector.
+
 ## 2026-11-21 · Fase 4 · Inventario, metas, Hoy completo y resumen del domingo · CERRADA
 `/verificar`: lint, tipos, Vitest (31), e2e (63 en verde, 1 saltada a propósito), pruebas SQL (123 asserts en la nube),
 RLS en las 19 tablas, `anon` sin permisos, `pnpm audit` limpio. `/semana`: 250–307 ms la página; `resumen_semana` 3,3 ms

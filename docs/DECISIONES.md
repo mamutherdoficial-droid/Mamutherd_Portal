@@ -177,3 +177,18 @@ tapa porque se deduce de su comisión y su porcentaje; nunca ve cobros, saldos n
 **D-038 · 2026-11-20 · "Ganada" en una sola función (`ganar_oportunidad`).** Marca ganada, crea el cobro de
 instalación, la suscripción y el pago del anticipo en una transacción; el pago va de último para que los vendedores
 ya estén y el trigger cree sus comisiones. Solo gerente.
+
+**D-039 · 2026-11-21 · Lector de .xlsx: `read-excel-file`.** Pequeño y mantenido; el paquete `xlsx` de npm está
+desactualizado y con vulnerabilidades altas. Menciona un paquete opcional de S3 que no se usa: por eso va en
+`serverExternalPackages` de `next.config.ts` (se carga tal cual en el servidor). El `.xlsx` de ejemplo de las pruebas se
+generó una vez y quedó en `tests/fixtures/extractos/` (sin dependencia para escribir Excel).
+
+**D-040 · 2026-11-21 · El lector de extractos busca la fila de títulos, no un formato fijo.** Sin un extracto real de
+Jacobo, se reconocen títulos como Fecha, Descripción/Detalle, Referencia/Dcto., Valor/Monto o Crédito/Débito, fechas
+día/mes/año o año/mes/día y montos colombianos ("$ 1.500.000,00"). Solo se guardan ingresos. Filas idénticas del mismo
+archivo son pagos distintos (se numeran en la huella). Cuando Jacobo suba un extracto real, se ajusta con un ejemplo
+anonimizado en las pruebas.
+
+**D-041 · 2026-11-21 · "No es este" deja elegir otro cobro; "Ignorar" descarta.** El PLAN decía que ambos descartan;
+en la práctica, si la propuesta falla casi siempre es otro cobro del mismo valor, así que "No es este" abre la lista
+(primero los del mismo valor). Nada se registra sin "Confirmar".
