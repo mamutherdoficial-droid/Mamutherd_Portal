@@ -120,7 +120,8 @@ test("una ayudante no ve cobros ni montos de cobros", async ({ browser }, info) 
   const ana = await comoAyudante(browser, info);
   await expect(ana.page.getByRole("link", { name: "Cobros" })).toHaveCount(0);
   await ana.page.goto("/cobros");
-  await expect(ana.page).toHaveURL(/\/mis-comisiones$/);
+  await expect(ana.page).toHaveURL(/\/hoy$/);
+  await ana.page.goto("/mis-comisiones");
   await expect(ana.page.getByText("Te debemos")).toBeVisible();
   await expect(ana.page.getByTestId("saldo-cliente")).toHaveCount(0);
   await ana.page.screenshot({ path: `tests/capturas/mis-comisiones-${info.project.name}.png`, fullPage: true });

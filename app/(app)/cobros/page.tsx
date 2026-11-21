@@ -16,7 +16,7 @@ export default async function Cobros() {
   const ctx = await obtenerContexto();
   if (!ctx) return <SinEmpresa />;
   // Una ayudante nunca ve cobros (RLS ya no se los da; aquí ni siquiera entra).
-  if (ctx.rol !== "gerente") redirect("/mis-comisiones");
+  if (ctx.rol !== "gerente") redirect("/hoy");
 
   const hoy = diaBogota();
   const mes = inicioMes(hoy);

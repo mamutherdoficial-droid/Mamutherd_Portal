@@ -42,12 +42,13 @@ export const RECORRIDOS: Recorrido[] = [
   },
   {
     id: "bienvenida-ayudante",
-    version: 1,
+    version: 2,
     tipo: "onboarding",
     roles: ["ayudante"],
     siguiente: "primera-visita",
     pasos: [
       { titulo: "Bienvenida a Portal Mamut", texto: "Aquí anotas tus visitas y ves cómo van tus ventas." },
+      { titulo: "Qué ves aquí", texto: "Tu día, tus ventas, tus comisiones y tus tareas. Solo lo tuyo." },
       { titulo: "Cómo ganas", texto: "Tu comisión aparece cuando el negocio paga, no antes." },
       { titulo: "Empecemos", texto: "Vamos a anotar tu primera visita de verdad. Toma 20 segundos." },
     ],
@@ -92,11 +93,31 @@ export const RECORRIDOS: Recorrido[] = [
   },
   {
     id: "equipo",
+    version: 2,
+    tipo: "tour",
+    roles: ["gerente"],
+    pasos: [
+      { titulo: "Tu equipo", texto: "Quién está, quién ya entra al portal y cuánto le debes.", objetivo: "equipo-lista" },
+      { titulo: "Suma a alguien", texto: "Agrégala aquí y luego invítala con un enlace por WhatsApp.", objetivo: "equipo-agregar" },
+    ],
+  },
+  {
+    id: "tareas",
     version: 1,
     tipo: "tour",
     roles: ["gerente"],
     pasos: [
-      { titulo: "Lo que le debes a cada uno", texto: "Comisiones y trabajos pendientes de cada persona del equipo.", objetivo: "equipo-lista" },
+      { titulo: "Asigna tareas", texto: "Fotos, instalaciones, seguimientos. Con valor, queda por pagar al terminar.", objetivo: "tareas-nueva" },
+      { titulo: "Márcala hecha", texto: "Un toque en el círculo y queda lista.", objetivo: "tareas-marcar" },
+    ],
+  },
+  {
+    id: "mis-tareas",
+    version: 1,
+    tipo: "tour",
+    roles: ["ayudante"],
+    pasos: [
+      { titulo: "Tus tareas", texto: "Lo que te asignaron. Cuando la termines, toca el círculo.", objetivo: "tareas-marcar" },
     ],
   },
   {

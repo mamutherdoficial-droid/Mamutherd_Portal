@@ -5,28 +5,35 @@ import { ArrowLeft } from "lucide-react";
 import { SinEmpresa } from "@/components/app/SinEmpresa";
 import { Dinero } from "@/components/ui/Dinero";
 import { Tarjeta } from "@/components/ui/Tarjeta";
-import { alertasComisiones, comisionesDe, miembroPorId, trabajosPorPagar } from "@/lib/datos-cobros";
+import { alertasComisiones, comisionesDe, trabajosPorPagar } from "@/lib/datos-cobros";
 import { NOMBRE_CONCEPTO } from "@/lib/dominio/cobros";
 import { diaBogota, fechaLarga } from "@/lib/dominio/semanas";
 import { obtenerContexto } from "@/lib/sesion";
 import { AlertasDescontar, PagarAyudante } from "./PagarAyudante";
+import { Invitar } from "./Invitar";
+import { ListaTareas } from "@/app/(app)/tareas/ListaTareas";
+import { persona as leerPersona, reglasComision, tareas as leerTareas } from "@/lib/datos-equipo";
 
 export const metadata: Metadata = { title: "Persona del equipo" };
 
 export default async function PersonaEquipo({ params }: PageProps<"/equipo/[id]">) {
   const ctx = await obtenerContexto();
   if (!ctx) return <SinEmpresa />;
-  if (ctx.rol !== "gerente") redirect("/mis-comisiones");
+  if (ctx.rol !== "gerente") redirect("/hoy");
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
 
-  const persona = await miembroPorId(ctx.empresa.id, id);
+  const persona = await leerPersona(ctx.empresa.id, id);
   if (!persona) notFound();
-  const [comisiones, trabajos, alertas] = await Promise.all([
+  const [comisiones, trabajos, alertas, reglas, susTareas] = await Promise.all([
     comisionesDe(ctx.empresa.id, id),
     trabajosPorPagar(ctx.empresa.id, id),
     alertasComisiones(ctx.empresa.id, id),
+    reglasComision(ctx.empresa.id),
+    leerTareas(ctx.empresa.id, id),
   ]);
+  const FORMA: Record<string, string> = { comision: "Comisión", por_trabajo: "Por trabajo", fijo: "Fijo", ninguno: "Sin pago" };
+  const ATRIB: Record<string, string> = { propia: "Venta propia", conjunta: "Venta conjunta", referido: "Referido" };
   const pendientes = comisiones.filter((k) => k.estado === "pendiente");
   const pagadas = comisiones.filter((k) => k.estado === "pagada");
   const totalPendiente = pendientes.reduce((s, k) => s + k.valor, 0) + trabajos.reduce((s, t) => s + t.valor, 0);
@@ -39,8 +46,24 @@ export default async function PersonaEquipo({ params }: PageProps<"/equipo/[id]"
       </Link>
       <header>
         <h1 className="font-titulo text-grande leading-tight">{persona.nombre}</h1>
-        <p className="text-tinta-suave">{persona.rol === "gerente" ? "Gerente" : "Ayudante"}</p>
+        <p className="text-tinta-suave">
+          {persona.rol === "gerente" ? "Gerente" : "Ayudante"} · {FORMA[persona.forma_pago] ?? persona.forma_pago}
+          {persona.correo && ` · ${persona.correo}`}
+        </p>
       </header>
+
+      {!persona.con_acceso && (
+        <Tarjeta titulo="Acceso al portal">
+          <Invitar
+            miembroId={persona.id}
+            nombre={persona.nombre}
+            whatsapp={persona.whatsapp}
+            empresa={ctx.empresa.nombre}
+            quien={ctx.nombre.split(" ")[0]!}
+            hayVigente={persona.invitacion_viva}
+          />
+        </Tarjeta>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Tarjeta titulo="Le debemos">
@@ -69,6 +92,30 @@ export default async function PersonaEquipo({ params }: PageProps<"/equipo/[id]"
           />
         )}
       </Tarjeta>
+
+      <Tarjeta titulo="Sus tareas">
+        <ListaTareas tareas={susTareas} esGerente mostrarPersona={false} />
+      </Tarjeta>
+
+      {persona.rol === "ayudante" && (
+        <Tarjeta titulo="Acuerdos" data-testid="acuerdos">
+          <p className="mb-2">
+            Forma de pago: <strong>{FORMA[persona.forma_pago] ?? persona.forma_pago}</strong>
+          </p>
+          {persona.forma_pago === "comision" && (
+            <ul className="flex flex-col gap-1">
+              {reglas.map((r) => (
+                <li key={`${r.atribucion}-${r.concepto}`}>
+                  {ATRIB[r.atribucion] ?? r.atribucion}: <strong className="numeros">{r.porcentaje}%</strong> de la{" "}
+                  {NOMBRE_CONCEPTO[r.concepto]?.toLowerCase() ?? r.concepto}
+                  {r.meses_max && ` × ${r.meses_max} meses`}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="mt-2 text-chico text-tinta-suave">La comisión se crea cuando el negocio paga, no antes.</p>
+        </Tarjeta>
+      )}
 
       <Tarjeta titulo="Pagadas">
         {pagadas.length === 0 ? (

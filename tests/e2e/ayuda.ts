@@ -10,6 +10,12 @@ export function correoAyudante(base: string) {
   return `${u}+ayudante@${d}`;
 }
 
+/** Cuenta sin empresa para probar invitaciones: el mismo correo con "+invitada" (misma clave). */
+export function correoInvitada(base: string) {
+  const [u, d] = base.split("@");
+  return `${u}+invitada@${d}`;
+}
+
 export async function entrar(page: Page, como: "gerente" | "ayudante" = "gerente") {
   await page.goto("/entrar");
   await page.getByLabel("Correo").fill(como === "gerente" ? correo! : correoAyudante(correo!));

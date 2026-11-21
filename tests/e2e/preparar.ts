@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { HOTSPOTS, RECORRIDOS } from "../../lib/recorridos";
-import { correoAyudante } from "./ayuda";
+import { correoAyudante, correoInvitada } from "./ayuda";
 
 /**
  * Crea el usuario de prueba de Playwright y lo vuelve gerente de una empresa aparte
@@ -36,6 +36,7 @@ export default async function preparar() {
   }
   const usuarioId = await usuario(correo);
   const ayudanteUsuarioId = await usuario(correoAyudante(correo));
+  const invitadaUsuarioId = await usuario(correoInvitada(correo));
 
   // 2. Empresa de pruebas
   const { data: empresa, error: e1 } = await admin
@@ -80,6 +81,12 @@ export default async function preparar() {
     });
     if (error) throw error;
   }
+
+  // 3c. La cuenta "invitada" empieza sin empresa (la prueba de invitaciones la vincula cada vez).
+  //     Se desvincula (no se borra): los miembros son datos y quedan como historial de pruebas.
+  const { error: ei } = await admin.from("miembros").update({ usuario_id: null }).eq("usuario_id", invitadaUsuarioId);
+  if (ei) throw ei;
+  await admin.from("recorridos_vistos").delete().eq("usuario_id", invitadaUsuarioId);
 
   // 4. Productos de la empresa de pruebas (para "Anotar visita").
   const { error: e3 } = await admin.from("productos").upsert(

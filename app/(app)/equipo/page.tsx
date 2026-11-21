@@ -7,27 +7,31 @@ import { OfrecerRecorrido } from "@/components/recorrido/Recorridos";
 import { Dinero } from "@/components/ui/Dinero";
 import { Vacio } from "@/components/ui/Vacio";
 import { equipo } from "@/lib/datos-cobros";
+import { accesos } from "@/lib/datos-equipo";
+import { AgregarPersona } from "./AgregarPersona";
 import { obtenerContexto } from "@/lib/sesion";
 
 export const metadata: Metadata = { title: "Equipo" };
 
-// Fase 2 (D-036): lista sencilla para llegar a lo que se le debe a cada persona.
-// Invitar personas y tareas llegan en la Fase 3.
+// Equipo: quién está, quién tiene acceso al portal y cuánto se le debe a cada uno.
 export default async function Equipo() {
   const ctx = await obtenerContexto();
   if (!ctx) return <SinEmpresa />;
-  if (ctx.rol !== "gerente") redirect("/mis-comisiones");
+  if (ctx.rol !== "gerente") redirect("/hoy");
 
-  const personas = await equipo(ctx.empresa.id);
+  const [personas, acceso] = await Promise.all([equipo(ctx.empresa.id), accesos(ctx.empresa.id)]);
   const total = personas.reduce((s, p) => s + p.porPagar, 0);
 
   return (
     <div className="flex flex-col gap-5">
-      <header>
-        <h1 className="font-titulo text-grande leading-tight">Equipo</h1>
-        <p className="text-tinta-suave">
-          Por pagar al equipo: <Dinero pesos={total} className="!text-base" />
-        </p>
+      <header className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-titulo text-grande leading-tight">Equipo</h1>
+          <p className="text-tinta-suave">
+            Por pagar al equipo: <Dinero pesos={total} className="!text-base" />
+          </p>
+        </div>
+        <AgregarPersona />
       </header>
       {personas.length === 0 ? (
         <Vacio icono={Users} titulo="Aún no hay nadie en el equipo" />
@@ -40,6 +44,7 @@ export default async function Equipo() {
                   <p className="truncate font-bold">{p.nombre}</p>
                   <p className="text-chico text-tinta-suave">
                     {p.rol === "gerente" ? "Gerente" : "Ayudante"}
+                    {!acceso[p.id] && <span className="ml-2 font-semibold text-alerta">· sin acceso al portal</span>}
                     {p.alertas > 0 && (
                       <span className="ml-2 inline-flex items-center gap-1 font-semibold text-error">
                         <CircleAlert size={14} strokeWidth={1.75} aria-hidden /> {p.alertas} por descontar

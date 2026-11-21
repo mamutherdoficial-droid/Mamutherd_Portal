@@ -16,6 +16,29 @@ Dudas:
 - …
 ```
 
+## 2026-11-21 · Fase 3 · Equipo, tareas y acceso de ayudantes · CERRADA
+`/verificar`: lint, tipos, Vitest (28), e2e (55 en verde, 1 saltada a propósito), pruebas SQL (104 asserts en la nube),
+RLS en las 19 tablas, `anon` sin permisos, sin `service_role` en la app, `pnpm audit` limpio.
+Hecho:
+- Migración `20261207000000_equipo.sql`: `miembros.correo`; tabla `invitaciones` (solo el hash sha256 del token, RLS de
+  gerente); `crear_invitacion` (una invitación viva por persona) y `aceptar_invitacion` (security definer: valida sesión,
+  token vigente y sin usar, persona sin cuenta); `hecha_en` también cuando el gerente marca una tarea (la ayudante no
+  puede inventar la fecha). Prueba `supabase/pruebas/fase3_test.sql`: token usado dos veces, reemplazado, inventado,
+  vencido y de otra empresa → error.
+- `/equipo`: Agregar persona (nombre, WhatsApp, correo, rol, forma de pago) y "sin acceso al portal".
+  `/equipo/[id]`: Invitar (enlace de un solo uso, 7 días, listo para WhatsApp o copiar), sus tareas y los Acuerdos
+  (forma de pago y reglas de comisión).
+- `/unirme?token=…`: crear cuenta con su contraseña o "Ya tengo cuenta"; si Supabase pide confirmar el correo, el enlace
+  del correo vuelve a `/unirme` y termina. Errores de Supabase traducidos a español.
+- `/tareas` (gerente: todas y Nueva tarea con valor del trabajo; ayudante: Mis tareas) con marcar hecha y cancelar.
+- La ayudante que abre `/cobros` o `/equipo` vuelve a `/hoy`.
+- Tutorial: bienvenida de ayudante v2 (qué ve, cómo gana, primera visita), tours de Equipo v2, Tareas y Mis tareas.
+  Vitest: ningún recorrido de la ayudante menciona cobros; máximo 5 pasos y 15 palabras.
+- e2e: cuenta "+invitada" para probar la invitación de punta a punta (se desvincula antes de cada corrida).
+Pendiente de configurar (Jacobo, en Supabase → Authentication → URL Configuration): agregar `/unirme` en Redirect URLs
+(docs/SEGURIDAD.md) para el caso en que se pida confirmar el correo.
+Para que Jacobo pruebe (con las demás al final): los 4 pasos de la Fase 3 en `docs/PLAN.md`.
+
 ## 2026-11-21 · Fase 2 · Cobros, mensualidades y comisiones · CERRADA
 `/verificar`: lint, tipos, Vitest (24), e2e (48/48, celular y PC), pruebas SQL (80 asserts en la nube, base + Fases 1 y 2),
 RLS en las 18 tablas, `anon` sin permisos, sin llaves en el código, `pnpm audit` limpio, ninguna comisión desde la app.
