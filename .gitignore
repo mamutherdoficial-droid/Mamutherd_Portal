@@ -15,3 +15,4 @@ coverage/
 .claude/settings.local.json
 next-env.d.ts
 *.tsbuildinfo
+test-results-e2e.txt

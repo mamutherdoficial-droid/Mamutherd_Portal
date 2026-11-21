@@ -8,7 +8,7 @@ tú marcas las columnas "Probada en el celular" y "Revisada por Claude".
 | Fase | Fecha | Estado | Revisada por Claude | Probada en el celular |
 | --- | --- | --- | --- | --- |
 | 0 · Base, estética de Mamut, entrar, celular y PC | Vie 20 – dom 22 nov | En curso: publicada, falta la prueba en el celular | — | — |
-| 1 · Clientes, ventas, Anotar visita, tutorial | Lun 23 nov (adelantada al 20) | Hecha en código: falta la prueba en el celular | — | — |
+| 1 · Clientes, ventas, Anotar visita, tutorial | Lun 23 nov (adelantada al 20) | Hecha: 40/40 pruebas en verde; falta la prueba en el celular | — | — |
 | 2 · Cobros, mensualidades, comisiones | Lun 30 nov | Pendiente | — | — |
 | 3 · Equipo, tareas, invitaciones | Lun 7 dic | Pendiente | — | — |
 | 4 · Inventario, metas, Hoy completo, /semana | Lun 14 dic | Pendiente | — | — |

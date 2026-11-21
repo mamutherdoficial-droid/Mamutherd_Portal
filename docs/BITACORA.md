@@ -16,7 +16,7 @@ Dudas:
 - …
 ```
 
-## 2026-11-20 · Fase 1 · Clientes, ventas, Anotar visita y tutorial (en pausa, sin cerrar)
+## 2026-11-20 · Fase 1 · Clientes, ventas, Anotar visita y tutorial
 Hecho:
 - Migraciones `20261123000000_anotar_visita.sql` (función en una transacción, D-031) y
   `20261123000100_recorridos_vistos.sql` (RLS: cada quien lo suyo). Aplicadas en la nube.
@@ -30,12 +30,13 @@ Hecho:
 Probado:
 - Pruebas SQL de base + Fase 1 contra la nube en `begin … rollback`: en verde.
 - `pnpm typecheck` y `pnpm lint`: sin errores. `pnpm build`: OK.
-- e2e contra `pnpm start`: 34/40 en la última corrida completa. Anotar visita: **6 toques, 1,7–5,8 s** (meta: ≤ 6 y < 20 s).
-  Las 6 fallas se diagnosticaron y se corrigieron después de esa corrida (falta volver a correrlas):
+- e2e contra `pnpm start`: **40/40 en verde** (celular y PC). Anotar visita: **6 toques, 1,1–1,3 s** (meta: ≤ 6 y < 20 s).
+  Arreglos que salieron de las pruebas:
   el resalte del tutorial medía el botón antes de que cargara la página; "Perdida" justo después de "Pasar a…"
-  perdía el toque mientras la tarjeta se mudaba de grupo; dos pruebas estaban mal planteadas.
+  perdía el toque mientras la tarjeta se mudaba de grupo; la capa oscura del tutorial tapaba el botón resaltado
+  (ahora deja pasar el toque por el hueco); dos pruebas estaban mal planteadas.
 Falta:
-- Volver a correr `pnpm e2e` completo y ver todo en verde; `/verificar` de la fase.
+- `/verificar` de la fase.
 - Prueba en el celular de Jacobo (Fases 0 y 1 juntas, D-030).
 Para que Jacobo pruebe:
 - Los 5 pasos de "Prueba en el celular" de la Fase 1 en `docs/PLAN.md`.

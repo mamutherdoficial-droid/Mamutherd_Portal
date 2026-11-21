@@ -131,7 +131,7 @@ export function CoachMarks({
     : { top: "50%", transform: "translateY(-50%)" };
 
   return (
-    <div className="fixed inset-0 z-50" data-testid={`recorrido-${recorrido.id}`}>
+    <div className="pointer-events-none fixed inset-0 z-50" data-testid={`recorrido-${recorrido.id}`}>
       {/* Fondo: si el paso espera un toque, deja tocar el elemento resaltado. */}
       {caja ? (
         <div
@@ -140,16 +140,16 @@ export function CoachMarks({
           style={{ ...caja, boxShadow: "0 0 0 9999px rgba(15,30,46,0.6)" }}
         />
       ) : (
-        <div aria-hidden className="fixed inset-0 bg-[#0f1e2e]/60" />
+        <div aria-hidden className="pointer-events-auto fixed inset-0 bg-[#0f1e2e]/60" />
       )}
-      {!paso.esperarToque && <div className="fixed inset-0" onClick={(e) => e.stopPropagation()} />}
+      {!paso.esperarToque && <div className="pointer-events-auto fixed inset-0" onClick={(e) => e.stopPropagation()} />}
       {paso.esperarToque && caja && (
         // Bloquea todo menos el recorte.
         <>
-          <div className="fixed inset-x-0 top-0" style={{ height: Math.max(caja.top, 0) }} />
-          <div className="fixed inset-x-0 bottom-0" style={{ top: caja.top + caja.height }} />
-          <div className="fixed left-0" style={{ top: caja.top, height: caja.height, width: Math.max(caja.left, 0) }} />
-          <div className="fixed right-0" style={{ top: caja.top, height: caja.height, left: caja.left + caja.width }} />
+          <div className="pointer-events-auto fixed inset-x-0 top-0" style={{ height: Math.max(caja.top, 0) }} />
+          <div className="pointer-events-auto fixed inset-x-0 bottom-0" style={{ top: caja.top + caja.height }} />
+          <div className="pointer-events-auto fixed left-0" style={{ top: caja.top, height: caja.height, width: Math.max(caja.left, 0) }} />
+          <div className="pointer-events-auto fixed right-0" style={{ top: caja.top, height: caja.height, left: caja.left + caja.width }} />
         </>
       )}
 
@@ -160,7 +160,7 @@ export function CoachMarks({
         aria-modal="true"
         aria-labelledby="coach-titulo"
         aria-describedby="coach-texto"
-        className="fixed inset-x-4 mx-auto max-w-sm rounded-tarjeta bg-superficie p-4 text-tinta shadow-xl outline-none motion-safe:animate-[aparecer_150ms_ease-out]"
+        className="pointer-events-auto fixed inset-x-4 mx-auto max-w-sm rounded-tarjeta bg-superficie p-4 text-tinta shadow-xl outline-none motion-safe:animate-[aparecer_150ms_ease-out]"
         style={estiloBurbuja}
       >
         <p className="text-chico font-semibold text-tinta-suave">
