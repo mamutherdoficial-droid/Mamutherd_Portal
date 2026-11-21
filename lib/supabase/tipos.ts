@@ -1,5 +1,6 @@
 // Generado con `supabase gen types` desde la base (no editar a mano). Ver package.json → tipos.
 
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
@@ -110,14 +111,14 @@ isOneToOne: false
                   ]
                 },"comisiones": {
                   Row: {
-                    "base": number,"creado_en": string,"empresa_id": string,"estado": string,"id": string,"medio_pago": string | null,"miembro_id": string,"oportunidad_id": string,"pagada_en": string | null,"pago_id": string,"parte": number,"porcentaje": number,"regla_id": string,"valor": number
+                    "ajustada_en": string | null,"base": number,"creado_en": string,"empresa_id": string,"estado": string,"id": string,"medio_pago": string | null,"miembro_id": string,"oportunidad_id": string,"pagada_en": string | null,"pago_id": string,"parte": number,"porcentaje": number,"regla_id": string,"valor": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "base": number,"creado_en"?: string,"empresa_id": string,"estado"?: string,"id"?: string,"medio_pago"?: string | null,"miembro_id": string,"oportunidad_id": string,"pagada_en"?: string | null,"pago_id": string,"parte": number,"porcentaje": number,"regla_id": string,"valor": number
+                    "ajustada_en"?: string | null,"base": number,"creado_en"?: string,"empresa_id": string,"estado"?: string,"id"?: string,"medio_pago"?: string | null,"miembro_id": string,"oportunidad_id": string,"pagada_en"?: string | null,"pago_id": string,"parte": number,"porcentaje": number,"regla_id": string,"valor": number
                   }
                   Update: {
-                    "base"?: number,"creado_en"?: string,"empresa_id"?: string,"estado"?: string,"id"?: string,"medio_pago"?: string | null,"miembro_id"?: string,"oportunidad_id"?: string,"pagada_en"?: string | null,"pago_id"?: string,"parte"?: number,"porcentaje"?: number,"regla_id"?: string,"valor"?: number
+                    "ajustada_en"?: string | null,"base"?: number,"creado_en"?: string,"empresa_id"?: string,"estado"?: string,"id"?: string,"medio_pago"?: string | null,"miembro_id"?: string,"oportunidad_id"?: string,"pagada_en"?: string | null,"pago_id"?: string,"parte"?: number,"porcentaje"?: number,"regla_id"?: string,"valor"?: number
                   }
                   Relationships: [
                     {
@@ -664,6 +665,9 @@ isOneToOne: false
                            },
 "es_miembro":
 { Args: { "p_empresa": string }; Returns: boolean
+                           },
+"ganar_oportunidad":
+{ Args: { "p_anticipo"?: number,"p_dia_cobro"?: number,"p_fecha_pago"?: string,"p_inicia"?: string,"p_medio"?: string,"p_oportunidad": string,"p_plan_instalacion": string,"p_plan_mensual"?: string,"p_precio_mensual"?: number,"p_valor": number,"p_vence": string }; Returns: Json
                            },
 "generar_mensualidades":
 { Args: { "p_empresa": string,"p_mes": string }; Returns: number

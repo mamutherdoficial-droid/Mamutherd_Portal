@@ -162,3 +162,18 @@ dueño) mientras llegan las metas de la Fase 4.
 **D-034 · 2026-11-20 · Quitar un vendedor de una venta solo si aún no tiene comisiones.** `oportunidad_vendedores` es
 una relación, no un dato de negocio, y se puede corregir; pero si esa persona ya tiene comisiones por la venta, se
 niega (las comisiones dependen de esa fila). "Ganada" no se ofrece en "Pasar a…": la marca el gerente con el pago (Fase 2).
+
+**D-035 · 2026-11-20 · Fases 2 a 4 de corrido.** Jacobo aprobó el plan de la Fase 2 y pidió seguir con todas las
+fases posibles sin parar entre una y otra (no puede avanzar en Nef por ahora). Cada fase se cierra igual: `/verificar`
+en verde, BITACORA y push. Las pruebas en el celular se acumulan y Jacobo las hace al final. La Fase 5 no se empieza:
+depende de "pasar la puerta" (PLAN).
+
+**D-036 · 2026-11-20 · `/equipo` sencillo llega en la Fase 2.** Sin la lista no hay cómo llegar a `/equipo/[id]`
+(comisiones y pagos a ayudantes). Invitaciones y tareas siguen en la Fase 3.
+
+**D-037 · 2026-11-20 · La ayudante puede leer la `base` de sus comisiones por API.** No se muestra en la app. No se
+tapa porque se deduce de su comisión y su porcentaje; nunca ve cobros, saldos ni pagos.
+
+**D-038 · 2026-11-20 · "Ganada" en una sola función (`ganar_oportunidad`).** Marca ganada, crea el cobro de
+instalación, la suscripción y el pago del anticipo en una transacción; el pago va de último para que los vendedores
+ya estén y el trigger cree sus comisiones. Solo gerente.
