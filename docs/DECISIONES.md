@@ -203,3 +203,26 @@ en Supabase (pero las invitaciones de la Fase 3 la necesitan).
 **D-043 · 2026-11-21 · Lo que NO se hizo de la Fase 5 y por qué.** Planes y cobro del propio portal y su nombre
 comercial (D-009): dependen de precios y nombre que decide Jacobo. Pagos que se marcan solos (D-018): requieren la SAS
 constituida y contrato con un intermediario. Unión con Tino: solo si hay clientes que usen ambos. Quedan en el PLAN.
+
+**D-044 · 2026-11-23 · Mapa con MapLibre + OpenFreeMap, no con Google Maps dentro de la app.** (Llegó como D-011
+en el paquete del mapa; se renumera porque D-011 ya existía.) Gratis, sin llave ni tarjeta y sin límite de vistas.
+Versión `maplibre-gl` 6.16.0: la 5.x tiene una vulnerabilidad crítica (GHSA-jrc7-96c5-q579, corregida en 6.4.1) y la
+más nueva tenía menos de dos semanas. Si OpenFreeMap se cae, se cambia la URL del estilo sin tocar el resto.
+
+**D-045 · 2026-11-23 · Orden de paradas en el celular; línea por las calles con openrouteservice** (era D-012).
+Vecino más cercano + 2-opt en el celular; la línea por las calles viene de openrouteservice desde el servidor
+(`ORS_API_KEY`, solo servidor) y se guarda en `rutas.geometria`. Sin llave o si falla: línea recta y "Línea aproximada".
+
+**D-046 · 2026-11-23 · Se guarda dónde está el negocio, nunca dónde está la persona** (era D-013). Ley 1581.
+
+**D-047 · 2026-11-23 · Navegar lo hace Google Maps, por enlaces** (era D-014). La ruta completa va en tramos de
+3 intermedios porque el enlace del celular no admite más.
+
+**D-048 · 2026-11-23 · "Pegar lugares" para armar la ruta desde una lista.** Pedido de Jacobo: poder ir actualizando
+las rutas diciendo los lugares. En `/ruta`, una línea por lugar: nombre y, opcional, un enlace de Google Maps (largo o
+corto), coordenadas o una dirección. Si el negocio ya existe (mismo nombre sin tildes ni mayúsculas) se reutiliza; si no,
+se crea. Las direcciones NO se convierten en coordenadas (en Bogotá los servicios gratis fallan, ARQUITECTURA · Mapa):
+el negocio queda "Sin ubicar" hasta ubicarlo con GPS, pin o enlace. Máximo 30 lugares por vez.
+Notas del paquete del mapa: la migración se renombró a `20261230000000_mapa_rutas.sql` (la fecha original chocaba con
+`anotar_visita`); `ruta.ts` y su prueba solo recibieron `!` para el TypeScript estricto del repo (sin cambio de lógica);
+los colores del prototipo ("ciruela") se cambian por los tokens de Mamut del portal.

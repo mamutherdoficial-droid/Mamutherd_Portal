@@ -60,8 +60,12 @@ declare
   ok   boolean := false;
 begin
   -- Meta de clientes nuevos de esta semana, antes de ganar.
+  -- La semilla puede traer ya la meta de esta semana: se reutiliza (la prueba no depende de la fecha).
   insert into public.metas (empresa_id, semana, indicador, objetivo)
-  values (e, date_trunc('week', hoy)::date, 'clientes_nuevos', 3) returning id into meta;
+  values (e, date_trunc('week', hoy)::date, 'clientes_nuevos', 3) on conflict do nothing;
+  select id into meta from public.metas
+   where empresa_id = e and semana = date_trunc('week', hoy)::date and indicador = 'clientes_nuevos'
+     and miembro_id is null and producto_id is null;
   antes := (select logrado from public.v_avance_metas where id = meta);
 
   -- Validaciones

@@ -26,6 +26,12 @@ isOneToOne: false
       referencedRelation: "clientes"
       referencedColumns: ["id"]
     },{
+      foreignKeyName: "actividades_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
+    },{
       foreignKeyName: "actividades_empresa_id_fkey"
       columns: ["empresa_id"]
 isOneToOne: false
@@ -47,14 +53,14 @@ isOneToOne: false
                   ]
                 },"clientes": {
                   Row: {
-                    "barrio": string | null,"borrado_en": string | null,"contacto_nombre": string | null,"contacto_whatsapp": string | null,"creado_en": string,"creado_por": string | null,"direccion": string | null,"empresa_id": string,"id": string,"instagram": string | null,"nombre_negocio": string,"notas": string | null,"origen": string,"tipo_negocio": string | null
+                    "barrio": string | null,"borrado_en": string | null,"contacto_nombre": string | null,"contacto_whatsapp": string | null,"creado_en": string,"creado_por": string | null,"direccion": string | null,"empresa_id": string,"id": string,"instagram": string | null,"lat": number | null,"lng": number | null,"nombre_negocio": string,"notas": string | null,"origen": string,"tipo_negocio": string | null,"ubicacion_fuente": string | null,"ubicado_en": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "barrio"?: string | null,"borrado_en"?: string | null,"contacto_nombre"?: string | null,"contacto_whatsapp"?: string | null,"creado_en"?: string,"creado_por"?: string | null,"direccion"?: string | null,"empresa_id": string,"id"?: string,"instagram"?: string | null,"nombre_negocio": string,"notas"?: string | null,"origen"?: string,"tipo_negocio"?: string | null
+                    "barrio"?: string | null,"borrado_en"?: string | null,"contacto_nombre"?: string | null,"contacto_whatsapp"?: string | null,"creado_en"?: string,"creado_por"?: string | null,"direccion"?: string | null,"empresa_id": string,"id"?: string,"instagram"?: string | null,"lat"?: number | null,"lng"?: number | null,"nombre_negocio": string,"notas"?: string | null,"origen"?: string,"tipo_negocio"?: string | null,"ubicacion_fuente"?: string | null,"ubicado_en"?: string | null
                   }
                   Update: {
-                    "barrio"?: string | null,"borrado_en"?: string | null,"contacto_nombre"?: string | null,"contacto_whatsapp"?: string | null,"creado_en"?: string,"creado_por"?: string | null,"direccion"?: string | null,"empresa_id"?: string,"id"?: string,"instagram"?: string | null,"nombre_negocio"?: string,"notas"?: string | null,"origen"?: string,"tipo_negocio"?: string | null
+                    "barrio"?: string | null,"borrado_en"?: string | null,"contacto_nombre"?: string | null,"contacto_whatsapp"?: string | null,"creado_en"?: string,"creado_por"?: string | null,"direccion"?: string | null,"empresa_id"?: string,"id"?: string,"instagram"?: string | null,"lat"?: number | null,"lng"?: number | null,"nombre_negocio"?: string,"notas"?: string | null,"origen"?: string,"tipo_negocio"?: string | null,"ubicacion_fuente"?: string | null,"ubicado_en"?: string | null
                   }
                   Relationships: [
                     {
@@ -89,6 +95,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "clientes"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "cobros_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
     },{
       foreignKeyName: "cobros_empresa_id_fkey"
       columns: ["empresa_id"]
@@ -257,6 +269,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "clientes"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "inventario_movimientos_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
     },{
       foreignKeyName: "inventario_movimientos_empresa_id_fkey"
       columns: ["empresa_id"]
@@ -468,6 +486,12 @@ isOneToOne: false
       referencedRelation: "clientes"
       referencedColumns: ["id"]
     },{
+      foreignKeyName: "oportunidades_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
+    },{
       foreignKeyName: "oportunidades_empresa_id_fkey"
       columns: ["empresa_id"]
 isOneToOne: false
@@ -617,6 +641,76 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"ruta_paradas": {
+                  Row: {
+                    "actividad_id": string | null,"cliente_id": string,"creado_en": string,"empresa_id": string,"estado": string,"hecha_en": string | null,"id": string,"orden": number,"ruta_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actividad_id"?: string | null,"cliente_id": string,"creado_en"?: string,"empresa_id": string,"estado"?: string,"hecha_en"?: string | null,"id"?: string,"orden": number,"ruta_id": string
+                  }
+                  Update: {
+                    "actividad_id"?: string | null,"cliente_id"?: string,"creado_en"?: string,"empresa_id"?: string,"estado"?: string,"hecha_en"?: string | null,"id"?: string,"orden"?: number,"ruta_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ruta_paradas_actividad_id_fkey"
+      columns: ["actividad_id"]
+isOneToOne: false
+      referencedRelation: "actividades"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ruta_paradas_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "clientes"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ruta_paradas_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
+    },{
+      foreignKeyName: "ruta_paradas_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ruta_paradas_ruta_id_fkey"
+      columns: ["ruta_id"]
+isOneToOne: false
+      referencedRelation: "rutas"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"rutas": {
+                  Row: {
+                    "borrado_en": string | null,"creada_en": string,"distancia_m": number | null,"duracion_s": number | null,"empresa_id": string,"fecha": string,"geometria": Json | null,"id": string,"miembro_id": string,"modo": string,"nombre": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "borrado_en"?: string | null,"creada_en"?: string,"distancia_m"?: number | null,"duracion_s"?: number | null,"empresa_id": string,"fecha": string,"geometria"?: Json | null,"id"?: string,"miembro_id": string,"modo"?: string,"nombre": string
+                  }
+                  Update: {
+                    "borrado_en"?: string | null,"creada_en"?: string,"distancia_m"?: number | null,"duracion_s"?: number | null,"empresa_id"?: string,"fecha"?: string,"geometria"?: Json | null,"id"?: string,"miembro_id"?: string,"modo"?: string,"nombre"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "rutas_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "rutas_miembro_id_fkey"
+      columns: ["miembro_id"]
+isOneToOne: false
+      referencedRelation: "miembros"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"suscripciones": {
                   Row: {
                     "cliente_id": string,"creado_en": string,"dia_cobro": number,"empresa_id": string,"estado": string,"id": string,"inicia": string,"oportunidad_id": string | null,"plan_id": string,"precio_mensual": number,"termina": string | null
@@ -635,6 +729,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "clientes"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "suscripciones_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
     },{
       foreignKeyName: "suscripciones_empresa_id_fkey"
       columns: ["empresa_id"]
@@ -679,6 +779,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "clientes"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "tareas_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
     },{
       foreignKeyName: "tareas_creado_por_fkey"
       columns: ["creado_por"]
@@ -747,6 +853,12 @@ isOneToOne: false
       referencedRelation: "clientes"
       referencedColumns: ["id"]
     },{
+      foreignKeyName: "cobros_cliente_id_fkey"
+      columns: ["cliente_id"]
+isOneToOne: false
+      referencedRelation: "v_ruta_paradas"
+      referencedColumns: ["cliente_id"]
+    },{
       foreignKeyName: "cobros_empresa_id_fkey"
       columns: ["empresa_id"]
 isOneToOne: false
@@ -788,6 +900,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"v_ruta_paradas": {
+                  Row: {
+                    "barrio": string | null,"cliente_id": string,"contacto_whatsapp": string | null,"direccion": string | null,"empresa_id": string,"estado": string,"etapa": string | null,"hecha_en": string | null,"id": string,"lat": number | null,"lng": number | null,"nombre_negocio": string,"orden": number,"proxima_accion": string | null,"ruta_id": string,"tipo_negocio": string | null
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    {
+      foreignKeyName: "ruta_paradas_empresa_id_fkey"
+      columns: ["empresa_id"]
+isOneToOne: false
+      referencedRelation: "empresas"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ruta_paradas_ruta_id_fkey"
+      columns: ["ruta_id"]
+isOneToOne: false
+      referencedRelation: "rutas"
+      referencedColumns: ["id"]
+    }
+                  ]
                 }
           }
           Functions: {
@@ -826,6 +958,9 @@ isOneToOne: false
                            },
 "mi_miembro":
 { Args: { "p_empresa": string }; Returns: string
+                           },
+"reordenar_ruta":
+{ Args: { "p_paradas": (string)[],"p_ruta": string }; Returns: undefined
                            },
 "resumen_semana":
 { Args: { "p_empresa": string,"p_lunes": string }; Returns: Json
