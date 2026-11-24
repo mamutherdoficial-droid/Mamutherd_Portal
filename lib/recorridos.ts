@@ -161,6 +161,19 @@ export const RECORRIDOS: Recorrido[] = [
       { titulo: "Ajusta el guion", texto: "Lo que más te dicen al perder una venta.", objetivo: "semana-objeciones" },
     ],
   },
+  // Tour de la ruta del día (Fase 1b).
+  {
+  id: "ruta",
+  version: 1,
+  tipo: "tour",
+  roles: ["gerente", "ayudante"],
+  pasos: [
+    { titulo: "Tu ruta de hoy", texto: "Los negocios que vas a visitar, en orden y en el mapa.", objetivo: "ruta-titulo" },
+    { titulo: "La siguiente parada", texto: "Toca Ir y Google Maps te lleva hasta allá.", objetivo: "ruta-siguiente" },
+    { titulo: "Camina menos", texto: "Ordena por cercanía desde donde estás.", objetivo: "ruta-ordenar" },
+    { titulo: "Pega tus lugares", texto: "Una línea por negocio, con su enlace de Google Maps.", objetivo: "ruta-pegar" },
+  ],
+  },
 ];
 
 /** Hotspots (punto ámbar sobre algo nuevo). Se guardan en recorridos_vistos con este id. */

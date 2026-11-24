@@ -22,6 +22,7 @@ import { Dinero } from "@/components/ui/Dinero";
 import { obtenerContexto } from "@/lib/sesion";
 import { EditarCliente } from "./EditarCliente";
 import { Vendedores } from "./Vendedores";
+import { UbicacionNegocio } from "./UbicacionNegocio";
 
 export const metadata: Metadata = { title: "Cliente" };
 
@@ -83,6 +84,7 @@ export default async function FichaCliente({ params }: PageProps<"/clientes/[id]
             <Dato icono={AtSign} etiqueta="Instagram" valor={cliente.instagram ? `@${cliente.instagram}` : null} />
           </dl>
           {cliente.notas && <p className="mt-3 whitespace-pre-line border-t border-borde pt-3">{cliente.notas}</p>}
+          <UbicacionNegocio clienteId={cliente.id} lat={cliente.lat} lng={cliente.lng} fuente={cliente.ubicacion_fuente} />
           {esGerente && cobros.length > 0 && (
             <div className="mt-3 border-t border-borde pt-3" data-testid="saldo-cliente">
               <p className="text-chico text-tinta-suave">Saldo por cobrar</p>

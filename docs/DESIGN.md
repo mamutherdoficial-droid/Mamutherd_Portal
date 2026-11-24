@@ -161,3 +161,26 @@ preguntas frecuentes y botón "Entrar". Sin testimonios, clientes ni cifras inve
 - Estados vacíos útiles: "Aún no hay visitas esta semana. La primera es la más difícil."
 - Errores que dicen qué hacer: "Ese cobro ya está pagado. Si fue un error, anula el pago primero."
 - Nunca "Error 500", "registro", "entidad" ni "transacción".
+
+### Mapa y ruta (fase 1b)
+Referencia visual: `docs/referencias/ruta-prototipo.html`. Lo que lo hace verse bien, y no como un Google Maps pegado:
+
+- **Mapa base calmado.** OpenFreeMap `positron` (claro) o `dark` (oscuro), con el fondo en `--fondo`, el agua y los
+  parques en tonos muy suaves. Nada de colores de marca en el mapa base: el color lo ponen los pines y la ruta.
+- **Pines en gota** de 32 px con borde de 3 px en `--superficie` y sombra suave, número en cifras tabulares.
+  Por estado de la parada: pendiente `--principal`, visitada `--bien` con ✓, saltada `--tinta-suave` al 70%.
+  La **siguiente** lleva un latido suave (anillo que se expande, 1,8 s). La activa crece un 20%.
+- **Pines por etapa** en el mapa de ventas: prospecto `--tinta-suave`, contactado y demo `--principal`,
+  propuesta `--alerta`, ganada `--bien`. Perdidas no se muestran salvo con filtro.
+- **Tu ubicación**: punto azul de 18 px con halo. No se guarda (D-046).
+- **Línea de la ruta**: 5 px en `--principal` sobre un borde de 9 px en `--superficie`, puntas redondeadas, y
+  "hormigas" claras que avanzan sobre ella (apagadas con `prefers-reduced-motion`).
+- **Barras de cristal** arriba: título de la ruta y botones redondos de 48 px con fondo translúcido y `backdrop-filter`.
+- **Hoja inferior**: en el celular empieza baja, mostrando solo el resumen ("1 de 6 visitas", km y minutos),
+  la barra de avance, la tarjeta **Siguiente** (fondo `--suave`, botón **Ir**) y los dos botones.
+  Al subirla aparece la lista. En escritorio es un panel fijo de 380 px a la izquierda.
+- **Movimiento**: al tocar un pin o una fila, el mapa se desliza (600 ms) hasta dejar el negocio centrado en la parte
+  visible, sin quedar debajo de la hoja (usar `padding` del mapa con el alto de la hoja, no `offset`).
+- **Textos**: "Arma tu ruta", "Ordenar por cercanía", "Ir", "Anota la visita", "Saltar", "Línea aproximada",
+  "Ruta ordenada: 3,3 km · 44 min a pie". Aviso tipo toast arriba, 1,8 s.
+- **Sin ubicación**: un negocio sin `lat/lng` aparece en la lista con el chip "Sin ubicar" y el botón "Ubicar".

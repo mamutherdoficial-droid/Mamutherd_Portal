@@ -85,3 +85,16 @@ Todas con `security_invoker = true`: respetan la RLS de quien consulta.
 | `extractos`, `movimientos_banco` | 4b | Extractos subidos y cada movimiento con su huella, propuesta y estado |
 
 También en la fase 2: trigger que llena `oportunidades.cerrada_en` al pasar a `ganada` o `perdida`.
+
+### Mapa y rutas (fase 1b)
+- `clientes.lat` / `lng` (las dos o ninguna), `ubicacion_fuente` (`gps`, `mapa`, `enlace`) y `ubicado_en`.
+  Es la ubicación **del negocio**; nunca se guarda dónde está una persona del equipo (D-046).
+- `rutas`: una salida de una persona en un día (`fecha` en hora de Bogotá), con `modo` y la última línea calculada
+  (`geometria`, `distancia_m`, `duracion_s`) como caché. Se borran con `borrado_en`.
+- `ruta_paradas`: negocio + `orden` + `estado` (`pendiente`, `visitada`, `saltada`). Un negocio va una vez por ruta.
+  Ruta, parada y negocio deben ser de la misma empresa (trigger `validar_parada`).
+- **Anotar una visita marca la parada sola:** al insertar una actividad `visita`, `demo` o `instalacion`, el trigger
+  `marcar_parada_visitada` busca la ruta de **esa persona** para **ese día** y marca la parada pendiente de ese negocio.
+  La app no tiene que hacer nada más.
+- `reordenar_ruta(ruta, ids[])` cambia el orden de todas las paradas en una sola operación; exige la lista completa.
+- Ayudante: ve y edita solo sus rutas; solo agrega negocios que puede ver; quita solo paradas pendientes.

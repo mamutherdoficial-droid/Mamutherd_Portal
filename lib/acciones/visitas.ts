@@ -53,6 +53,7 @@ export async function anotarVisita(datos: DatosVisita): Promise<Resultado<Visita
   revalidatePath("/hoy");
   revalidatePath("/ventas");
   revalidatePath("/clientes", "layout");
+  revalidatePath("/ruta", "layout"); // la base marca sola la parada de hoy como visitada
   return {
     ok: true,
     mensaje: "Visita anotada",

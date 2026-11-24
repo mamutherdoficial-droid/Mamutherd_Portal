@@ -268,3 +268,61 @@ Se pasa a la fase 5 solo si se cumplen las tres:
 - **Pagos que se marcan solos** (D-018), solo con Mamut Herd SAS constituida: enlaces de pago con aviso
   automático o conexión al banco por open finance.
 - Unión con Tino en un solo proyecto de Supabase (ver ARQUITECTURA) si ya hay clientes que usen ambos.
+
+## Fase 1b — Mapa y ruta del día
+
+La base ya está lista: `supabase/migrations/20261230000000_mapa_rutas.sql` (ubicación de los negocios, `rutas`,
+`ruta_paradas`, `reordenar_ruta`, `v_ruta_paradas` y el trigger que marca la parada al anotar la visita), con sus
+pruebas en `supabase/pruebas/mapa_test.sql`. La lógica de orden y enlaces está en `lib/dominio/ruta.ts` con
+`ruta.test.ts`. El aspecto a copiar está en `docs/referencias/ruta-prototipo.html` (ábrelo en el navegador).
+
+> Llegó en el paquete del mapa (23 nov 2026), después de la Fase 5. Decisiones D-044 a D-048; colores con los tokens de Mamut.
+
+**Construir**
+- Dependencia: `maplibre-gl` (D-044), cargada con `next/dynamic` y `ssr: false` solo en `/ventas?vista=mapa` y `/ruta`.
+  Mapa base de OpenFreeMap (`positron` en claro, `dark` en oscuro) con el toque de paleta del prototipo. La
+  atribución de OpenStreetMap queda visible.
+- **Ubicación del negocio** (D-046):
+  - En la hoja **Anotar visita**, interruptor "Estoy en el negocio" (encendido por defecto si el negocio no tiene
+    ubicación): guarda `lat`/`lng` con `navigator.geolocation`, `ubicacion_fuente = 'gps'`. Nunca pisa una ubicación ya
+    guardada sin preguntar.
+  - En la ficha del cliente: "Ubicar en el mapa" (mover un pin, `'mapa'`) o "Pegar enlace de Google Maps" (`'enlace'`,
+    con `leerEnlaceMaps`; los enlaces cortos se resuelven en el servidor, ver ARQUITECTURA · Mapa).
+- **Mapa de clientes**: en `/ventas`, selector **Lista | Mapa**. Pines por etapa (colores en DESIGN · Mapa), filtros
+  de producto y "sin próxima fecha". Tocar un pin abre una tarjeta corta: nombre, etapa, próxima acción, WhatsApp y
+  **"Agregar a la ruta de hoy"**. Mantener presionado el mapa: **"Nuevo negocio aquí"** (crea el cliente como prospecto).
+- **Ruta del día** (`/ruta`, y `/ruta/[id]` para días anteriores):
+  - Si no hay ruta para hoy, "Arma tu ruta": nombre (zona) y agregar negocios desde el mapa o el buscador.
+  - Hoja inferior como el prototipo: "1 de 6 visitas", km y minutos, barra de avance, tarjeta **Siguiente** con
+    botón **Ir** (`enlaceIrA`), botones **Ordenar por cercanía** (`ordenarPorCercania` desde tu ubicación o desde la
+    última parada hecha, y `reordenar_ruta`) y **Anota la visita** (abre la hoja con el negocio ya elegido).
+  - Lista de paradas: subir/bajar (o arrastrar en escritorio), **Saltar** (`estado = 'saltada'`) y **Quitar**
+    (solo pendientes). "Abrir toda la ruta en Google Maps" con `tramosGoogleMaps` (tramos de 3 intermedios).
+  - Línea por las calles: Server Action `calcularRuta(rutaId)` que llama a openrouteservice (`foot-walking`, D-045) y
+    guarda `geometria`, `distancia_m` y `duracion_s`. Solo se recalcula cuando cambia el orden o las paradas. Si falla
+    o no hay llave, línea recta + `estimarCaminata` y el texto "Línea aproximada".
+- En `/hoy`: tarjeta **"Tu ruta de hoy"** (paradas, avance y km) que abre `/ruta`; si no hay, "Arma tu ruta".
+
+**Criterios**
+- [ ] `bash scripts/probar-sql.sh` pasa con `mapa_test.sql` (y su versión para Supabase en Windows).
+- [ ] Vitest: `lib/dominio/ruta.test.ts` en verde.
+- [ ] e2e móvil (Playwright con `context.setGeolocation`): anotar visita a un negocio nuevo con "Estoy en el negocio"
+      → aparece como pin en el mapa de ventas.
+- [ ] e2e: armar ruta con 4 negocios → "Ordenar por cercanía" no alarga el recorrido → anotar la visita del primero →
+      la parada queda en verde y la tarjeta **Siguiente** pasa al segundo, sin recargar.
+- [ ] Una ayudante solo ve sus rutas y solo agrega negocios que ve (lo prueba `mapa_test.sql`; la UI no muestra otros).
+- [ ] `ORS_API_KEY` no aparece en el bundle del navegador (búsqueda en `.next/static`).
+- [ ] `/ruta` carga en < 2,5 s con 4G simulado; el JS del mapa no se descarga en `/hoy` ni en `/cobros`.
+- [ ] Claro y oscuro; con `prefers-reduced-motion` no hay animación de la línea ni del pin siguiente.
+
+**Prompt**
+```
+Lee CLAUDE.md, docs/DESIGN.md (Mapa y Ruta), docs/ARQUITECTURA.md (Mapa), docs/MODELO-DATOS.md (Mapa y rutas),
+docs/DECISIONES.md (D-044 a D-047) y abre docs/referencias/ruta-prototipo.html para copiar su aspecto.
+Ejecuta la Fase 1b de docs/PLAN.md. La migración 20261230000000_mapa_rutas.sql, sus pruebas y lib/dominio/ruta.ts
+ya existen: úsalos y no los cambies salvo que una prueba lo exija (anótalo en DECISIONES).
+Plan primero; al terminar /verificar y BITACORA.
+```
+
+**Agregado por pedido de Jacobo (D-048):** en `/ruta`, **Pegar lugares**: una línea por negocio, con enlace de Google Maps,
+coordenadas o dirección (la dirección no se geocodifica: queda "Sin ubicar").

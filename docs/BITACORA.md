@@ -16,6 +16,31 @@ Dudas:
 - …
 ```
 
+## 2026-11-23 · Fase 1b · Mapa de clientes y ruta del día · CERRADA EN CÓDIGO
+`/verificar`: lint, tipos, Vitest (62), e2e (todas en verde; 3 saltadas a propósito), pruebas SQL (166 asserts en la nube),
+RLS en las 24 tablas, `anon` sin permisos, `pnpm audit` sin vulnerabilidades, `ORS_API_KEY` en 0 archivos del navegador,
+MapLibre en archivos aparte (next/dynamic) que solo bajan en el mapa y la ruta.
+Hecho (a partir del paquete `mamut-portal-mapa.zip` de Jacobo):
+- Migración `20261230000000_mapa_rutas.sql` (renombrada: la fecha original chocaba con `anotar_visita`) y su prueba
+  `supabase/pruebas/mapa_test.sql`. `lib/dominio/ruta.ts` y su prueba (solo `!` por el TypeScript estricto).
+- `maplibre-gl` 6.16.0 (la 5.x tiene una vulnerabilidad crítica, D-044) con OpenFreeMap; pines en gota con los colores de Mamut.
+- `/ruta`: mapa + hoja con "X de N visitas", km y minutos (openrouteservice por las calles o "Línea aproximada"),
+  **Siguiente** con **Ir** (Google Maps), **Ordenar por cercanía** desde el GPS, **Anota la visita** (la base marca la
+  parada sola), subir/bajar, Saltar, Quitar y "Abrir en Google Maps" en tramos. "Arma tu ruta" si no hay.
+- **Pegar lugares** (D-048, pedido de Jacobo): una línea por negocio con enlace de Maps, coordenadas o dirección.
+- `/ventas?vista=mapa`: pines por etapa, tarjeta con WhatsApp y "Agregar a la ruta de hoy".
+- Ficha del cliente: ubicación, "Estoy aquí", "Pegar enlace de Google Maps" y "Agregar a la ruta de hoy".
+- Anotar visita: "Estoy en el negocio" (GPS; nunca pisa una ubicación guardada; nunca guarda dónde está la persona, D-046).
+- Hoy: tarjeta "Tu ruta de hoy" / "Arma tu ruta". Menú: Ruta. Tutorial: tour de la ruta.
+- Arreglo (D-049): Hoy se salía del ancho en el celular; prueba nueva `ancho.spec.ts`.
+- Prueba SQL de la Fase 2 que dependía de la fecha (meta de la semana ya sembrada), corregida.
+No hecho del PLAN 1b: "Nuevo negocio aquí" manteniendo presionado el mapa y mover el pin a mano en la ficha (hoy se ubica
+con GPS o enlace); quedan para después.
+Para Jacobo:
+- Vercel → Settings → Environment Variables: `ORS_API_KEY` con la misma llave de `.env.local` (sin `NEXT_PUBLIC_`).
+- Prueba en la calle (docs/PLAN.md · Fase 1b): anotar una visita con "Estoy en el negocio" y ver el pin; armar la ruta
+  de mañana con 5 negocios (o pegarlos), ordenarla y tocar "Ir" en el primero.
+
 ## 2026-11-21 · Fase 5 (parte construible) · Producto para otros gerentes · CERRADA EN CÓDIGO
 `/verificar`: lint, tipos, Vitest (48), e2e (82 en verde, 2 saltadas a propósito), pruebas SQL (149 asserts en la nube),
 RLS en las 22 tablas, `anon` sin permisos, sin llaves en el código, `pnpm audit` sin vulnerabilidades.

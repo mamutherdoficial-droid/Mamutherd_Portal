@@ -137,6 +137,9 @@ export default async function preparar() {
   await admin.from("movimientos_banco").delete().eq("empresa_id", empresa.id);
   await admin.from("extractos").delete().eq("empresa_id", empresa.id);
 
+  // 4e. Mapa (Fase 1b): sin rutas de corridas anteriores.
+  await admin.from("rutas").delete().eq("empresa_id", empresa.id);
+
   // 5. Empezar limpio: borra los negocios de corridas anteriores (solo de "pruebas-e2e").
   const { error: e4 } = await admin.from("clientes").delete().eq("empresa_id", empresa.id);
   if (e4) throw e4;

@@ -7,6 +7,7 @@ export type Seccion = {
   icono:
     | "hoy"
     | "ventas"
+    | "ruta"
     | "clientes"
     | "cobros"
     | "comisiones"
@@ -26,6 +27,7 @@ export const FASE_ACTUAL = 5;
 export const SECCIONES: Seccion[] = [
   { ruta: "/hoy", etiqueta: "Hoy", icono: "hoy", roles: ["gerente", "ayudante"], fase: 0 },
   { ruta: "/ventas", etiqueta: "Ventas", icono: "ventas", roles: ["gerente", "ayudante"], fase: 1 },
+  { ruta: "/ruta", etiqueta: "Ruta", icono: "ruta", roles: ["gerente", "ayudante"], fase: 1 },
   { ruta: "/clientes", etiqueta: "Clientes", icono: "clientes", roles: ["gerente", "ayudante"], fase: 1 },
   { ruta: "/cobros", etiqueta: "Cobros", icono: "cobros", roles: ["gerente"], fase: 2 },
   { ruta: "/mis-comisiones", etiqueta: "Comisiones", icono: "comisiones", roles: ["ayudante"], fase: 2 },

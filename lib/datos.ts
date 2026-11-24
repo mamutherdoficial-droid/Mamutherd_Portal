@@ -170,6 +170,9 @@ export type ClienteFicha = {
   notas: string | null;
   creado_en: string;
   creado_por: string | null;
+  lat: number | null;
+  lng: number | null;
+  ubicacion_fuente: string | null;
 };
 
 export async function clienteFicha(empresaId: string, clienteId: string): Promise<ClienteFicha | null> {
@@ -177,7 +180,7 @@ export async function clienteFicha(empresaId: string, clienteId: string): Promis
   const { data, error } = await supabase
     .from("clientes")
     .select(
-      "id, nombre_negocio, tipo_negocio, direccion, barrio, contacto_nombre, contacto_whatsapp, instagram, origen, notas, creado_en, creado_por",
+      "id, nombre_negocio, tipo_negocio, direccion, barrio, contacto_nombre, contacto_whatsapp, instagram, origen, notas, creado_en, creado_por, lat, lng, ubicacion_fuente",
     )
     .eq("empresa_id", empresaId)
     .eq("id", clienteId)

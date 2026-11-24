@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarClock, CalendarDays, CircleAlert, ListChecks, Target } from "lucide-react";
+import { CalendarClock, CalendarDays, CircleAlert, ListChecks, MapPinned, Target } from "lucide-react";
 import { SinEmpresa } from "@/components/app/SinEmpresa";
 import { AnotarVisita } from "@/components/dominio/AnotarVisita";
 import { AvanceMeta } from "@/components/dominio/AvanceMeta";
@@ -12,6 +12,7 @@ import { Vacio } from "@/components/ui/Vacio";
 import { clientesCortos, productosActivos, seguimientosHasta, visitasDesde, type OportunidadFila } from "@/lib/datos";
 import { tareas as leerTareas } from "@/lib/datos-equipo";
 import { metasEntre, tableroGerente } from "@/lib/datos-fase4";
+import { rutaDelDia } from "@/lib/datos-mapa";
 import { diaBogota, fechaLarga, inicioSemana, sumarDias, textoFecha } from "@/lib/dominio/semanas";
 import { obtenerContexto } from "@/lib/sesion";
 
@@ -25,7 +26,7 @@ export default async function Hoy() {
 
   const hoy = diaBogota();
   const lunes = inicioSemana(hoy);
-  const [seguimientos, clientes, productos, semana, metas, misTareas, tablero] = await Promise.all([
+  const [seguimientos, clientes, productos, semana, metas, misTareas, tablero, ruta] = await Promise.all([
     seguimientosHasta(ctx.empresa.id, sumarDias(hoy, 7)),
     clientesCortos(ctx.empresa.id),
     productosActivos(ctx.empresa.id),
@@ -33,7 +34,10 @@ export default async function Hoy() {
     metasEntre(ctx.empresa.id, lunes, lunes),
     leerTareas(ctx.empresa.id, ctx.miembroId),
     esGerente ? tableroGerente(ctx.empresa.id) : Promise.resolve(null),
+    rutaDelDia(ctx.empresa.id, ctx.miembroId, hoy),
   ]);
+  const paradasHoy = ruta?.paradas ?? [];
+  const visitadasHoy = paradasHoy.filter((p) => p.estado === "visitada").length;
 
   const vencidos = seguimientos.filter((s) => s.proxima_fecha! < hoy);
   const deHoy = seguimientos.filter((s) => s.proxima_fecha === hoy);
@@ -64,7 +68,19 @@ export default async function Hoy() {
 
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Columna 1: a quién llamar */}
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-4">
+          <Link href="/ruta" className="flex items-center gap-3 rounded-tarjeta border border-borde bg-superficie p-4 hover:bg-suave" data-testid="hoy-ruta">
+            <MapPinned size={24} strokeWidth={1.75} aria-hidden className="shrink-0" />
+            <span className="min-w-0 flex-1">
+              <span className="block font-bold">{paradasHoy.length > 0 ? "Tu ruta de hoy" : "Arma tu ruta"}</span>
+              <span className="block truncate text-chico text-tinta-suave">
+                {paradasHoy.length > 0
+                  ? `${ruta!.nombre} · ${visitadasHoy} de ${paradasHoy.length} visitas${ruta!.distancia_m ? ` · ${(ruta!.distancia_m / 1000).toLocaleString("es-CO", { maximumFractionDigits: 1 })} km` : ""}`
+                  : "Los negocios que vas a visitar, en orden y en el mapa."}
+              </span>
+            </span>
+            <span aria-hidden className="text-tinta-suave">→</span>
+          </Link>
           <Tarjeta titulo="Para hoy" data-testid="seguimientos-hoy">
             {vencidos.length + deHoy.length === 0 ? (
               <Vacio icono={CalendarClock} titulo="Nada pendiente para hoy" texto="Cuando anotes visitas con fecha, aquí ves a quién volver a llamar." />
@@ -97,7 +113,7 @@ export default async function Hoy() {
         </div>
 
         {/* Columna 2: cómo vamos */}
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-4">
           <Tarjeta
             titulo="Meta de la semana"
             data-testid="hoy-metas"
@@ -110,7 +126,7 @@ export default async function Hoy() {
             {misMetas.length === 0 ? (
               <Vacio icono={Target} titulo="Sin metas esta semana" texto={esGerente ? "Ponlas en Metas." : undefined} />
             ) : (
-              <div className="flex flex-col gap-4">
+              <div className="flex min-w-0 flex-col gap-4">
                 {misMetas.map((m) => (
                   <AvanceMeta key={m.id} indicador={m.indicador} objetivo={m.objetivo} logrado={m.logrado} quien={m.miembro_id ? "tuya" : null} />
                 ))}

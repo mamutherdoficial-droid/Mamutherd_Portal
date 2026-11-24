@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  MapPinned,
   BookOpen,
   Boxes,
   Coins,
@@ -22,6 +23,7 @@ import { disponible, type Seccion } from "@/lib/navegacion";
 const ICONOS: Record<Seccion["icono"], LucideIcon> = {
   hoy: Sun,
   ventas: Handshake,
+  ruta: MapPinned,
   clientes: Store,
   cobros: Wallet,
   comisiones: Coins,

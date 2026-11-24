@@ -100,3 +100,13 @@ export async function clienteConCobro(nombre: string, valor: number) {
   });
   if (e3) throw e3;
 }
+
+/** Borra las rutas de la empresa de pruebas (cada prueba del mapa arma la suya). */
+export async function borrarRutasPrueba() {
+  const { createClient } = await import("@supabase/supabase-js");
+  const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data: empresa } = await admin.from("empresas").select("id").eq("slug", "pruebas-e2e").single();
+  await admin.from("rutas").delete().eq("empresa_id", empresa!.id);
+}

@@ -226,3 +226,8 @@ el negocio queda "Sin ubicar" hasta ubicarlo con GPS, pin o enlace. Máximo 30 l
 Notas del paquete del mapa: la migración se renombró a `20261230000000_mapa_rutas.sql` (la fecha original chocaba con
 `anotar_visita`); `ruta.ts` y su prueba solo recibieron `!` para el TypeScript estricto del repo (sin cambio de lógica);
 los colores del prototipo ("ciruela") se cambian por los tokens de Mamut del portal.
+
+**D-049 · 2026-11-23 · Ninguna página puede ser más ancha que el celular (prueba de regresión).** La tarjeta "Tu ruta
+de hoy" estiró la cuadrícula de Hoy a 427 px en un celular de 390 (texto en una línea dentro de una columna de grid sin
+`min-w-0`): la vista quedaba corrida y los toques caían desplazados. Se corrigió con `min-w-0` y `tests/e2e/ancho.spec.ts`
+revisa 13 páginas en el celular. "Estoy en el negocio" quedó junto al campo del negocio (habla de él) y no pegado a Guardar.

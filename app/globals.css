@@ -138,3 +138,67 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Mapa y ruta (Fase 1b, D-044). Aspecto: docs/referencias/ruta-prototipo.html ---------- */
+.pin-mapa {
+  width: 36px;
+  height: 44px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.pin-mapa .gota {
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  border-radius: 50% 50% 50% 3px;
+  transform: rotate(-45deg);
+  background: var(--principal);
+  border: 3px solid var(--superficie);
+  box-shadow: 0 6px 14px rgb(15 30 46 / 0.3);
+  display: grid;
+  place-items: center;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+.pin-mapa .gota span {
+  transform: rotate(45deg);
+  color: var(--sobre-principal);
+  font-weight: 700;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.pin-mapa.visitada .gota { background: var(--bien); }
+.pin-mapa.visitada .gota span { color: #fff; }
+.pin-mapa.saltada .gota { background: var(--tinta-suave); opacity: 0.7; }
+.pin-mapa.activa .gota { transform: rotate(-45deg) scale(1.2); }
+.pin-mapa.siguiente .gota::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid var(--principal);
+  animation: latido-pin 1.8s ease-out infinite;
+}
+/* Pines por etapa en el mapa de ventas (DESIGN · Mapa). */
+.pin-mapa.etapa-prospecto .gota, .pin-mapa.etapa-ninguna .gota { background: var(--tinta-suave); }
+.pin-mapa.etapa-propuesta .gota { background: var(--alerta); }
+.pin-mapa.etapa-ganada .gota { background: var(--bien); }
+.pin-mapa.etapa-perdida .gota { background: var(--error); opacity: 0.6; }
+@keyframes latido-pin {
+  from { opacity: 0.8; transform: scale(0.7); }
+  to { opacity: 0; transform: scale(1.5); }
+}
+.yo-mapa {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2f6feb;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 6px rgb(47 111 235 / 0.18);
+}
+.maplibregl-ctrl-attrib { font-size: 10px; }

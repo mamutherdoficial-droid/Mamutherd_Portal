@@ -8,6 +8,7 @@ import { Boton } from "@/components/ui/Boton";
 import { Chip } from "@/components/ui/Chip";
 import { cx } from "@/components/ui/clases";
 import { Hoja } from "@/components/ui/Hoja";
+import { ubicarCliente } from "@/lib/acciones/mapa";
 import { anotarVisita } from "@/lib/acciones/visitas";
 import { RESULTADOS, type Resultado } from "@/lib/dominio/etapas";
 import { diaBogota, fechaLarga, inicioSemana, sumarDias } from "@/lib/dominio/semanas";
@@ -52,18 +53,30 @@ export function AnotarVisita({ clientes, productos, clienteFijo }: Props) {
         <Plus size={22} strokeWidth={2} aria-hidden />
         Anotar visita
       </button>
-      <Hoja abierta={abierta} alCerrar={() => setAbierta(false)} titulo="Anotar visita">
-        {abierta && (
-          <FormVisita
-            clientes={clientes}
-            productos={productos}
-            clienteFijo={clienteFijo}
-            alGuardar={() => setAbierta(false)}
-          />
-        )}
-      </Hoja>
+      <HojaAnotarVisita abierta={abierta} alCerrar={() => setAbierta(false)} clientes={clientes} productos={productos} clienteFijo={clienteFijo} />
     </>
   );
+}
+
+/** La hoja sola, para abrirla desde otro botón (por ejemplo "Anota la visita" en la ruta del día). */
+export function HojaAnotarVisita({ abierta, alCerrar, ...props }: Props & { abierta: boolean; alCerrar: () => void }) {
+  return (
+    <Hoja abierta={abierta} alCerrar={alCerrar} titulo="Anotar visita">
+      {abierta && <FormVisita {...props} alGuardar={alCerrar} />}
+    </Hoja>
+  );
+}
+
+/** GPS del celular, una vez (no se guarda dónde está la persona, solo el negocio: D-046). */
+function miUbicacion(): Promise<{ lat: number; lng: number } | null> {
+  return new Promise((resolver) => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) return resolver(null);
+    navigator.geolocation.getCurrentPosition(
+      (p) => resolver({ lat: p.coords.latitude, lng: p.coords.longitude }),
+      () => resolver(null),
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 30_000 },
+    );
+  });
 }
 
 function FormVisita({ clientes, productos, clienteFijo, alGuardar }: Props & { alGuardar: () => void }) {
@@ -78,6 +91,8 @@ function FormVisita({ clientes, productos, clienteFijo, alGuardar }: Props & { a
   const [resultado, setResultado] = useState<Resultado | null>(null);
   const [accion, setAccion] = useState("");
   const [fecha, setFecha] = useState<string | null>(null);
+  // "Estoy en el negocio": ubica el negocio con el GPS al guardar (sin pisar una ubicación guardada).
+  const [aqui, setAqui] = useState(true);
   const [sinFecha, setSinFecha] = useState(false);
   const [nota, setNota] = useState("");
   const [error, setError] = useState<string>();
@@ -166,6 +181,16 @@ function FormVisita({ clientes, productos, clienteFijo, alGuardar }: Props & { a
     avisar(r.datos?.clienteNuevo ? `Visita anotada · ${cliente.nombre} es cliente nuevo` : "Visita anotada");
     alGuardar();
     router.refresh();
+    if (aqui && r.datos?.clienteId) {
+      const p = await miUbicacion();
+      if (p) {
+        const u = await ubicarCliente(r.datos.clienteId, p, "gps", false);
+        if (u.ok && u.datos?.cambio) {
+          avisar(`${cliente.nombre} quedó en el mapa`);
+          router.refresh();
+        }
+      }
+    }
   }
 
   return (
@@ -254,6 +279,14 @@ function FormVisita({ clientes, productos, clienteFijo, alGuardar }: Props & { a
       </fieldset>
 
       {/* 2. Producto */}
+      <label className="flex min-h-12 items-center justify-between gap-3 rounded-control border border-borde px-4 py-2">
+        <span>
+          <span className="block font-semibold">Estoy en el negocio</span>
+          <span className="text-chico text-tinta-suave">Lo pone en el mapa con tu GPS. No cambia una ubicación ya guardada.</span>
+        </span>
+        <input type="checkbox" role="switch" checked={aqui} onChange={(e) => setAqui(e.target.checked)} className="size-6 accent-[var(--principal)]" />
+      </label>
+
       <fieldset className={resaltar(1)}>
         <legend className="mb-2 font-semibold">Producto</legend>
         <div className="flex flex-wrap gap-2">
@@ -372,7 +405,7 @@ function FormVisita({ clientes, productos, clienteFijo, alGuardar }: Props & { a
         </p>
       )}
 
-      <Boton ancho onClick={guardar} disabled={guardando} className="sticky bottom-0">
+      <Boton ancho onClick={guardar} disabled={guardando} className="sticky bottom-0 z-10 shadow-[0_-8px_16px_var(--superficie)]">
         {guardando ? "Guardando…" : "Guardar"}
       </Boton>
     </div>
