@@ -10,8 +10,9 @@ select set_config('request.jwt.claims', '{"sub":"00000000-0000-0000-0000-0000000
 do $$
 declare
   e     uuid := (select id from public.empresas where slug = 'mamut-herd');
-  op    uuid := current_setting('prueba.op')::uuid;
-  cli   uuid := current_setting('prueba.cli')::uuid;
+  -- La venta de la Fase 2, buscada por nombre: en CI cada archivo corre en su propia conexión.
+  cli   uuid := (select id from public.clientes where empresa_id = e and nombre_negocio = 'Café Fase Dos');
+  op    uuid := (select id from public.oportunidades where cliente_id = cli order by creado_en limit 1);
   ana   uuid := (select id from public.miembros where nombre = 'Ana (prueba)');
   cobro uuid;
   ext   uuid;
